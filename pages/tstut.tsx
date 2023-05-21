@@ -1,5 +1,6 @@
 import { listeners } from "process";
 import { useRouter } from "next/router";
+import axios from "axios";
 import Link from 'next/link'
 import Head from "next/head";
 import tstut from '/styles/tstut.module.scss'
@@ -65,8 +66,8 @@ export default function About() {
                     <li>- {API_STATUS.REJECTED}</li>    
                 </ul>    
             </div>
-            <Link href={'/'} className={tstut.a_link}>Homepage Link</Link>
-            <button onClick={handleOnClick} className={tstut.a_link_btn}>Go to Homepage</button>
+            <Link href={'/'} className={tstut["a-link"]}>Homepage Link</Link>
+            <button onClick={handleOnClick} className={tstut["a-link-btn"]}>Go to Homepage</button>
         </>
     )
 } 

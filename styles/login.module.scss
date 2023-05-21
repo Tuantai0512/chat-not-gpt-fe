@@ -1,0 +1,38 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    .title{
+        font-size: 48px;
+        font-weight: 600;
+    }
+    .form{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 25px;
+    }
+    .input{
+        width: 320px;
+        height: 52px;
+        border: 1px solid #a89c9c;
+        padding: 0 15px;
+        &:focus-visible{
+            outline-color: #10a37f;
+        }
+    }
+    .link{
+        color: #10a37f;
+    }
+    .button{
+        width: 320px;
+        height: 52px;
+        background-color: #10a37f;
+        color: #fff;
+    }
+    .register{
+        margin-top: 15px;
+    }
+}
