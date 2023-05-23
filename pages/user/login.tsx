@@ -1,12 +1,17 @@
 import login from "/styles/login.module.scss"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { userLoginSuccess } from "../../stores/actions/userActions";
 
 export default function Login() {
 
     const router = useRouter();
+    const dispatch = useDispatch();
+    const userInfoRedux = useSelector((state: any) => state.user);
+    const { userInfo } = userInfoRedux;
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('')
@@ -29,9 +34,10 @@ export default function Login() {
         if(data.errCode == 2 || data.errCode == 3){
             setError(data.message);
         }else if(data.errCode == 0){
+            dispatch(userLoginSuccess(data.user));
+            console.log(userInfo);
             router.push('/');
         }
-        console.log(data);
     }
 
     return (
