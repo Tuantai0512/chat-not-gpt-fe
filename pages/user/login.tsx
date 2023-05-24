@@ -35,10 +35,13 @@ export default function Login() {
             setError(data.message);
         }else if(data.errCode == 0){
             dispatch(userLoginSuccess(data.user));
-            console.log(userInfo);
             router.push('/');
         }
     }
+    useEffect(() => {
+        if (!userInfoRedux) return;
+        localStorage.setItem('user', JSON.stringify(userInfo));
+    }, [userInfoRedux]);
 
     return (
         <div className={login.container}>
