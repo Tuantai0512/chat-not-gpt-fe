@@ -35,7 +35,7 @@ export default function Login() {
             setError(data.message);
         }else if(data.errCode == 0){
             dispatch(userLoginSuccess(data.user));
-            router.push(`/user/${data.user.id}`);
+            router.push(`/`);
         }
     }
     useEffect(() => {
