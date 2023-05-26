@@ -1,6 +1,6 @@
 // initial states here
 export const initalState = {
-    isLoggedin: false,
+    isLoggedIn: false,
     userInfo: {}
 };
 

@@ -40,7 +40,8 @@ export default function Login() {
     }
     useEffect(() => {
         if (!userInfoRedux) return;
-        localStorage.setItem('user', JSON.stringify(userInfo));
+        console.log(userInfoRedux);
+        localStorage.setItem('isLoggedIn', JSON.stringify(userInfoRedux.isLoggedIn));
     }, [userInfoRedux]);
 
     return (
