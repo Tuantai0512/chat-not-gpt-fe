@@ -2,6 +2,9 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
 import { useSelector } from "react-redux";
+import ChatsNav from "../components/chatsNav"
+import HomeStyle from "../styles/home.module.scss"
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -12,9 +15,12 @@ export default function Home() {
   if (isLoggedIn) {
     return (
       isEmptyObj === false &&
-      <>
-        <div>Welcome {userInfo.firstName} {userInfo.lastName} to my chat app</div>
-      </>
+      <main className={`${HomeStyle['chats-app']} flex`}>
+        <ChatsNav userInfo={userInfo}/>
+        <div>
+          <div>Welcome {userInfo.firstName} {userInfo.lastName} to my chat app</div>
+        </div>
+      </main>
     )
   } else {
     return (
