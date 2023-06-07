@@ -2,11 +2,13 @@ import { createStore, applyMiddleware, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import userReducer from "./reducers/userReducer";
+import modalReducer from "./reducers/modalReducer";
 import { createWrapper } from "next-redux-wrapper";
 
 // You can add many reducers at here
 const rootReducer = combineReducers({
   user: userReducer,
+  modal: modalReducer
 });
 
 const initalState = {};

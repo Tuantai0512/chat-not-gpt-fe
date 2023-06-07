@@ -4,6 +4,7 @@ import axios from "axios";
 import Link from 'next/link'
 import Head from "next/head";
 import tstut from '/styles/tstut.module.scss'
+import Modal from "@/components/modal";
 
 export default function About() {
 
@@ -66,6 +67,7 @@ export default function About() {
                     <li>- {API_STATUS.REJECTED}</li>    
                 </ul>    
             </div>
+            <Modal textBtn="Account settings"/>
             <Link href={'/'} className={tstut["a-link"]}>Homepage Link</Link>
             <button onClick={handleOnClick} className={tstut["a-link-btn"]}>Go to Homepage</button>
         </>

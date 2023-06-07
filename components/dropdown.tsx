@@ -3,13 +3,17 @@ import { Menu, Transition } from '@headlessui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
 import dropdown from "../styles/dropdown.module.scss"
+import { useDispatch, useSelector } from "react-redux";
+import { openModal } from '@/stores/actions/modalActions'
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Dropdown(props: any) {
-  console.log(props);
+  const dispatch = useDispatch();
+  const modalStatusRedux = useSelector((state: any) => state.modal);
+  const { isOpen } = modalStatusRedux
   return (
     <Menu as="div" className="relative inline-flex text-left w-full">
       <div className="w-full">
@@ -38,6 +42,7 @@ export default function Dropdown(props: any) {
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block px-4 py-2 text-sm'
                   )}
+                  onClick={() => dispatch(openModal())}
                 >
                   Account settings
                 </a>
@@ -78,6 +83,7 @@ export default function Dropdown(props: any) {
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block w-full px-4 py-2 text-left text-sm'
                     )}
+                    onClick={() => {localStorage.removeItem("Token")}}
                   >
                     Sign out
                   </button>

@@ -34,14 +34,13 @@ export default function Login() {
         if(data.errCode == 2 || data.errCode == 3){
             setError(data.message);
         }else if(data.errCode == 0){
-            dispatch(userLoginSuccess(data.user));
+            dispatch(userLoginSuccess(data));
             router.push(`/`);
         }
     }
     useEffect(() => {
         if (!userInfoRedux) return;
-        console.log(userInfoRedux);
-        localStorage.setItem('isLoggedIn', JSON.stringify(userInfoRedux.isLoggedIn));
+        localStorage.setItem('Token', JSON.stringify(userInfoRedux.userInfo.token));
     }, [userInfoRedux]);
 
     return (

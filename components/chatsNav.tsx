@@ -1,9 +1,9 @@
 import chats from "../styles/chats.module.scss"
 import { useState, useEffect } from "react"
 import Dropdown from '@/components/dropdown';
+import Modal from '@/components/modal';
 
 export default function ChatsNav(props: any) {
-    console.log(props)
     const [search, setSearch] = useState('')
     return(
         <div className={`w-1/4 h-screen flex-col justify-between ${chats['chats-nav']}`}>
