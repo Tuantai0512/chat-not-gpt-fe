@@ -1,11 +1,13 @@
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { useRouter } from 'next/router';
 import { useTheme } from "next-themes";
 import { Mukta } from '@next/font/google'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from '@/stores/actions/modalActions'
+import axios from 'axios';
 
 
 const mukta = Mukta({
@@ -19,6 +21,7 @@ function classNames(...classes: string[]) {
 }
 
 export default function Modal(props: any) {
+    const router = useRouter();
     const [activeTab, setActiveTab] = useState(0);
     const cancelButtonRef = useRef(null)
     const dispatch = useDispatch();
@@ -26,10 +29,19 @@ export default function Modal(props: any) {
     const userInfoRedux = useSelector((state: any) => state.user);
     const { userInfo } = userInfoRedux;
     const { isOpen } = modalStatusRedux
-    
+
     const { systemTheme, theme, setTheme } = useTheme();
     const currentTheme = theme === 'system' ? systemTheme : theme;
-    console.log(theme);
+
+    const handleDelete = async(id:number) => {
+        try{
+            let res = await axios.delete(`http://localhost:8000/api/v1/delete-user?id=${id}`)
+            router.push('/user/login');
+            return res
+        }catch{
+            return undefined
+        }
+    }
 
     return (
         <Transition.Root show={isOpen} as={Fragment} className={`${mukta.variable} font-sans`}>
@@ -58,7 +70,7 @@ export default function Modal(props: any) {
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         >
                             <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl">
-                                <div className="bg-gray-50 dark:bg-gray-900 dark:text-white px-4 py-3 sm:flex sm:flex-row flex justify-between items-center">
+                                <div className="bg-gray-50 dark:bg-gray-900 dark:text-white px-4 py-3 sm:flex sm:flex-row flex justify-between items-center border-b-2 border-gray-300 dark:border-gray-500">
                                     <span>{props.textBtn}</span>
                                     <button
                                         type="button"
@@ -73,18 +85,18 @@ export default function Modal(props: any) {
                                     <div className="sm:flex sm:items-start">
                                         <div className="mx-auto flex h-full w-1/5 flex-shrink-0 items-center justify-center">
                                             <ul className='flex flex-col w-full'>
-                                                <li 
-                                                className={classNames( activeTab == 0 ? "bg-slate-400 text-white" : "bg-transparent" ,"mt-3 px-4 py-2 inline-flex w-full justify-center rounded-md text-sm font-semibold text-gray-900 dark:text-white ring-inset hover:cursor-pointer sm:mt-0 sm:w-auto")}
-                                                onClick={() =>setActiveTab(0)}
+                                                <li
+                                                    className={classNames(activeTab == 0 ? "bg-slate-400 text-white" : "bg-transparent", "mt-3 px-4 py-2 inline-flex w-full justify-center rounded-md text-sm font-semibold text-gray-900 dark:text-white ring-inset hover:cursor-pointer sm:mt-0 sm:w-auto")}
+                                                    onClick={() => setActiveTab(0)}
                                                 >Profile</li>
-                                                <li 
-                                                className={classNames( activeTab == 1 ? "bg-slate-400 text-white" : "bg-transparent" ,"mt-3 px-4 py-2 inline-flex w-full justify-center rounded-md text-sm font-semibold text-gray-900 dark:text-white ring-inset hover:cursor-pointer sm:mt-0 sm:w-auto")}
-                                                onClick={() =>setActiveTab(1)}
+                                                <li
+                                                    className={classNames(activeTab == 1 ? "bg-slate-400 text-white" : "bg-transparent", "mt-3 px-4 py-2 inline-flex w-full justify-center rounded-md text-sm font-semibold text-gray-900 dark:text-white ring-inset hover:cursor-pointer sm:mt-0 sm:w-auto")}
+                                                    onClick={() => setActiveTab(1)}
                                                 >Setting</li>
                                             </ul>
                                         </div>
                                         {
-                                            activeTab === 0 && 
+                                            activeTab === 0 &&
                                             <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                                 <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900 dark:text-white">
                                                     My profile
@@ -98,19 +110,29 @@ export default function Modal(props: any) {
                                             </div>
                                         }
                                         {
-                                            activeTab === 1 && 
+                                            activeTab === 1 &&
                                             <div className="mt-3 text-center w-4/5 sm:ml-4 sm:mt-0 sm:text-left">
                                                 <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900 dark:text-white">
                                                     Setting
                                                 </Dialog.Title>
                                                 <div className="mt-2">
                                                     <p className="text-sm text-gray-500 dark:text-white">
-                                                        <div>
+                                                        <div className='flex justify-between pt-2 pb-2 items-center'>
                                                             Theme
-                                                            <select value={theme} onChange={(e) => setTheme(e.target.value)}>
-                                                                <option value="light">Light</option>
-                                                                <option value="dark">Dark</option>
+                                                            <select
+                                                                value={theme}
+                                                                onChange={(e) => setTheme(e.target.value)}
+                                                                className='bg-transparent border-black-600 dark:border-white-600 border-2 px-2 py-2 rounded-lg'
+                                                            >
+                                                                <option value="light" className='text-black'>Light</option>
+                                                                <option value="dark" className='text-black'>Dark</option>
                                                             </select>
+                                                        </div>
+                                                    </p>
+                                                    <p className="text-sm text-gray-500 dark:text-white">
+                                                        <div className='flex justify-between pt-2 items-center border-t-2 border-gray-300 dark:border-gray-500'>
+                                                            Delete account
+                                                            <button className='px-4 py-2 bg-red-600 text-white rounded-lg' onClick={() => handleDelete(props.userInfo.id)}>Delete</button>
                                                         </div>
                                                     </p>
                                                 </div>

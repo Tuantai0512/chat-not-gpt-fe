@@ -80,7 +80,7 @@ export default function Home() {
       <ChatsNav userInfo={user} />
       <div className="w-3/4 dark:bg-gray-700 dark:text-white">
         <div>Welcome to my chat app</div>
-        <Modal textBtn="Account settings" />
+        <Modal textBtn="Account settings" userInfo={user}/>
       </div>
     </main>
   );
