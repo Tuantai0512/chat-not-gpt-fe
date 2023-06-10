@@ -1,8 +1,9 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Mukta } from '@next/font/google'
-import { wrapper ,store } from "../stores/stores";
+import { wrapper, store } from "../stores/stores";
 import { Provider } from "react-redux";
+import { ThemeProvider } from "next-themes"
 
 const mukta = Mukta({
   subsets: ['latin'],
@@ -12,11 +13,13 @@ const mukta = Mukta({
 
 function App({ Component, pageProps }: AppProps) {
   return (
-      <Provider store={store}>
+    <Provider store={store}>
+      <ThemeProvider attribute="class">
         <div className={`${mukta.variable} font-sans`}>
           <Component {...pageProps} />
         </div>
-      </Provider>
+      </ThemeProvider>
+    </Provider>
   )
 }
 

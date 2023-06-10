@@ -5,7 +5,6 @@ import ChatsNav from "../components/chatsNav";
 import HomeStyle from "../styles/home.module.scss";
 import Modal from "@/components/modal";
 import axios from "axios";
-import { NextResponse } from "next/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -47,7 +46,7 @@ const inter = Inter({ subsets: ["latin"] });
 const verifyToken = async (token: string) => {
   try {
     const res = await axios.post("http://localhost:8000/api/v1/auth", {
-      token: token.slice(1, token.length - 1),
+      token,
     });
 
     return res?.data;
@@ -61,8 +60,6 @@ export default function Home() {
   const [user, setUser] = useState({});
   useEffect(() => {
     const token = localStorage.getItem("Token");
-
-    console.log({ token });
 
     if (token) {
       verifyToken(token).then((user) => {
@@ -81,7 +78,7 @@ export default function Home() {
   return (
     <main className={`${HomeStyle["chats-app"]} flex`}>
       <ChatsNav userInfo={user} />
-      <div>
+      <div className="w-3/4 dark:bg-gray-700 dark:text-white">
         <div>Welcome to my chat app</div>
         <Modal textBtn="Account settings" />
       </div>
