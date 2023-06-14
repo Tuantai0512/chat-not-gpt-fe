@@ -2,7 +2,6 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
-import dropdown from "../styles/dropdown.module.scss"
 import { useDispatch, useSelector } from "react-redux";
 import { openModal } from '@/stores/actions/modalActions'
 

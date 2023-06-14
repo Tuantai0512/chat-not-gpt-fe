@@ -7,7 +7,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from '@/stores/actions/modalActions'
+import { removeToken } from '@/stores/actions/userActions';
 import axios from 'axios';
+import { log } from 'console';
 
 
 const mukta = Mukta({
@@ -23,25 +25,37 @@ function classNames(...classes: string[]) {
 export default function Modal(props: any) {
     const router = useRouter();
     const [activeTab, setActiveTab] = useState(0);
+    const [editName, setEditName] = useState(false);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [editEmail, setEditEmail] = useState(false);
+    const [email, setEmail] = useState('');
+    const [editPhoneNumber, setEditPhoneNumber] = useState(false);
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [editGender, setEditGender] = useState(false);
+    const [gender,setGender] = useState(0);
     const cancelButtonRef = useRef(null)
     const dispatch = useDispatch();
     const modalStatusRedux = useSelector((state: any) => state.modal);
     const userInfoRedux = useSelector((state: any) => state.user);
-    const { userInfo } = userInfoRedux;
     const { isOpen } = modalStatusRedux
+    /* console.log(props);
+    console.log([firstName, lastName, email, phoneNumber, gender]); */
 
     const { systemTheme, theme, setTheme } = useTheme();
     const currentTheme = theme === 'system' ? systemTheme : theme;
 
-    const handleDelete = async(id:number) => {
-        try{
-            let res = await axios.delete(`http://localhost:8000/api/v1/delete-user?id=${id}`)
-            router.push('/user/login');
+    const handleDelete = async (id: number) => {
+        try {
+            let res = await axios.delete(`http://localhost:8000/api/v1/delete-user?id=${id}`);
+            localStorage.removeItem("Token");
+            dispatch(removeToken());
             return res
-        }catch{
+        } catch {
             return undefined
         }
     }
+
 
     return (
         <Transition.Root show={isOpen} as={Fragment} className={`${mukta.variable} font-sans`}>
@@ -97,14 +111,78 @@ export default function Modal(props: any) {
                                         </div>
                                         {
                                             activeTab === 0 &&
-                                            <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                            <div className="mt-3 w-4/5 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                                 <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900 dark:text-white">
                                                     My profile
                                                 </Dialog.Title>
                                                 <div className="mt-2">
                                                     <p className="text-sm text-gray-500 dark:text-white">
-                                                        Are you sure you want to deactivate your account? All of your data will be permanently
-                                                        removed. This action cannot be undone.
+                                                        <div>
+                                                            <div>
+                                                                {
+                                                                    editName === false ?
+                                                                        <p className='py-1 flex justify-between items-center'>
+                                                                            {`${props.userInfo.firstName} ${props.userInfo.lastName}`}
+                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditName(true)}>Edit</button>
+                                                                        </p>
+                                                                        :
+                                                                        <span className='py-1 flex justify-between items-center'>
+                                                                            <input type="text" placeholder='First Name' name='firstName' onChange={(e) => setFirstName(e.target.value)}/>
+                                                                            <input type="text" placeholder='Last Name' name='lastName' onChange={(e) => setLastName(e.target.value)}/>
+                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditName(false)}>Save</button>
+                                                                        </span>
+                                                                }
+                                                            </div>
+                                                            <div>
+                                                                {
+                                                                    editEmail === false ?
+                                                                        <p className='py-1 flex justify-between items-center'>
+                                                                            {props.userInfo.email}
+                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditEmail(true)}>Edit</button>
+                                                                        </p>
+                                                                        :
+                                                                        <span className='py-1 flex justify-between items-center'>
+                                                                            <input type="text" placeholder='Email' name='email' onChange={(e) => setEmail(e.target.value)}/>
+                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditEmail(false)}>Save</button>
+                                                                        </span>
+
+                                                                }
+                                                            </div>
+                                                            <div>
+                                                                {
+                                                                    editPhoneNumber === false ?
+                                                                        <p className='py-1 flex justify-between items-center'>
+                                                                            {props.userInfo.phoneNumber}
+                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditPhoneNumber(true)}>Edit</button>
+                                                                        </p>
+                                                                        :
+                                                                        <span className='py-1 flex justify-between items-center'>
+                                                                            <input type="text" placeholder='Mobile' name='phoneNumber' onChange={(e) => setPhoneNumber(e.target.value)}/>
+                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditPhoneNumber(false)}>Save</button>
+                                                                        </span>
+                                                                }
+                                                            </div>
+                                                            <div>
+                                                                {
+                                                                    editGender === false ?
+                                                                        <p className='py-1 flex justify-between items-center'>
+                                                                            {props.userInfo.gender === 0 ? 'Male' : 'Female'}
+                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditGender(true)}>Edit</button>
+                                                                        </p>
+                                                                        :
+                                                                        <span className='py-1 flex justify-between items-center'>
+                                                                            <select
+                                                                                value={gender}
+                                                                                onChange={(e) => setGender(e.target.value)}                                                                            
+                                                                            >
+                                                                                <option value={0}>Male</option>
+                                                                                <option value={1}>Female</option>
+                                                                            </select>
+                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditGender(false)}>Save</button>
+                                                                        </span>
+                                                                }
+                                                            </div>
+                                                        </div>
                                                     </p>
                                                 </div>
                                             </div>

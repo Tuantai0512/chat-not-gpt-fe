@@ -4,13 +4,12 @@ import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { userLoginSuccess } from "../../stores/actions/userActions";
+import { addToken } from "../../stores/actions/userActions";
 
 export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch();
   const userInfoRedux = useSelector((state: any) => state.user);
-  const { userInfo } = userInfoRedux;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -40,14 +39,14 @@ export default function Login() {
     if (data.errCode == 2 || data.errCode == 3) {
       setError(data.message);
     } else if (data.errCode == 0) {
-      dispatch(userLoginSuccess(data));
+      dispatch(addToken(data.token));
       router.push(`/`);
     }
   };
   useEffect(() => {
-    if (!userInfoRedux?.userInfo?.token) return;
+    if (!userInfoRedux?.token) return;
 
-    localStorage.setItem("Token", userInfoRedux.userInfo.token);
+    localStorage.setItem("Token", userInfoRedux.token);
   }, [userInfoRedux]);
 
   return (

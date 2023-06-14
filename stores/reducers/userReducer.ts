@@ -1,20 +1,24 @@
 // initial states here
 export const initalState = {
-    isLoggedIn: false,
-    userInfo: {}
+  token: null,
+  data: null,
 };
 
 const userReducer = (state = initalState, action: any) => {
-    switch (action.type) {
-      case 'USER_LOGIN_SUCCESS':
-        return{
-            ...state,
-            isLoggedIn: true,
-            userInfo: action.payload
-        }
-      default:
-        return state
-    }
+  switch (action.type) {
+    case 'ADD_TOKEN':
+      return {
+        ...state,
+        token: action.payload
+      }
+    case 'REMOVE_TOKEN':
+      return {
+        ...state,
+        token: null
+      }
+    default:
+      return state
   }
-  
-  export default userReducer
+}
+
+export default userReducer

@@ -1,6 +1,12 @@
-export const userLoginSuccess = (userInfo: any) => {
+export const addToken = (token: string | null) => {
     return {
-      type: 'USER_LOGIN_SUCCESS',
-      payload: userInfo
+      type: 'ADD_TOKEN',
+      payload: token
     }
+}
+
+export const removeToken = () => {
+  return {
+    type: 'REMOVE_TOKEN'
+  }
 }
