@@ -16,6 +16,21 @@ const userReducer = (state = initalState, action: any) => {
         ...state,
         token: null
       }
+    case 'SAVE_DATA':
+      return {
+        ...state,
+        data: action.payload
+      }
+    case 'EDIT_NAME':
+      return {
+        ...state,
+        data: action.payload
+      }
+    case 'EDIT_EMAIL':
+      return {
+        ...state,
+        data: action.payload
+      }
     default:
       return state
   }

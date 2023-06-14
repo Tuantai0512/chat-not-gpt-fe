@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from '@/stores/actions/modalActions'
-import { removeToken } from '@/stores/actions/userActions';
+import { removeToken, editNameRedux, editEmailRedux } from '@/stores/actions/userActions';
 import axios from 'axios';
 import { log } from 'console';
 
@@ -33,14 +33,12 @@ export default function Modal(props: any) {
     const [editPhoneNumber, setEditPhoneNumber] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
     const [editGender, setEditGender] = useState(false);
-    const [gender,setGender] = useState(0);
+    const [gender,setGender] = useState('0');
     const cancelButtonRef = useRef(null)
     const dispatch = useDispatch();
     const modalStatusRedux = useSelector((state: any) => state.modal);
     const userInfoRedux = useSelector((state: any) => state.user);
     const { isOpen } = modalStatusRedux
-    /* console.log(props);
-    console.log([firstName, lastName, email, phoneNumber, gender]); */
 
     const { systemTheme, theme, setTheme } = useTheme();
     const currentTheme = theme === 'system' ? systemTheme : theme;
@@ -56,6 +54,57 @@ export default function Modal(props: any) {
         }
     }
 
+    const handleEditName = async(id: number, firstName: string, lastName: string) => {
+        try{
+            let res = await axios.put('http://localhost:8000/api/v1/edit-user',{
+                id, firstName, lastName
+            })
+            setEditName(false)
+            dispatch(editNameRedux(firstName, lastName));
+            return res
+        }catch(e){
+            console.log(e);
+        }
+    }
+
+    const handleEditEmail = async(id: number, email:string) => {
+        try{
+            let res = await axios.put('http://localhost:8000/api/v1/edit-user',{
+                id, email
+            })
+            setEditEmail(false)
+            dispatch(editEmailRedux(email));
+            return res
+        }catch(e){
+            console.log(e);
+        }
+    }
+
+    const handleEditPhoneNumber = async(id: number, phoneNumber:string) => {
+        try{
+            let res = await axios.put('http://localhost:8000/api/v1/edit-user',{
+                id, phoneNumber
+            })
+            setEditPhoneNumber(false)
+            dispatch(editEmailRedux(phoneNumber));
+            return res
+        }catch(e){
+            console.log(e);
+        }
+    }
+
+    const handleEditGender = async(id: number, gender:string) => {
+        try{
+            let res = await axios.put('http://localhost:8000/api/v1/edit-user',{
+                id, gender
+            })
+            setEditGender(false)
+            dispatch(editEmailRedux(gender));
+            return res
+        }catch(e){
+            console.log(e);
+        }
+    }
 
     return (
         <Transition.Root show={isOpen} as={Fragment} className={`${mukta.variable} font-sans`}>
@@ -129,7 +178,7 @@ export default function Modal(props: any) {
                                                                         <span className='py-1 flex justify-between items-center'>
                                                                             <input type="text" placeholder='First Name' name='firstName' onChange={(e) => setFirstName(e.target.value)}/>
                                                                             <input type="text" placeholder='Last Name' name='lastName' onChange={(e) => setLastName(e.target.value)}/>
-                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditName(false)}>Save</button>
+                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => handleEditName(props.userInfo.id, firstName, lastName)}>Save</button>
                                                                         </span>
                                                                 }
                                                             </div>
@@ -143,7 +192,7 @@ export default function Modal(props: any) {
                                                                         :
                                                                         <span className='py-1 flex justify-between items-center'>
                                                                             <input type="text" placeholder='Email' name='email' onChange={(e) => setEmail(e.target.value)}/>
-                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditEmail(false)}>Save</button>
+                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => handleEditEmail(props.userInfo.id, email)}>Save</button>
                                                                         </span>
 
                                                                 }
@@ -158,7 +207,7 @@ export default function Modal(props: any) {
                                                                         :
                                                                         <span className='py-1 flex justify-between items-center'>
                                                                             <input type="text" placeholder='Mobile' name='phoneNumber' onChange={(e) => setPhoneNumber(e.target.value)}/>
-                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditPhoneNumber(false)}>Save</button>
+                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => handleEditPhoneNumber(props.userInfo.id, phoneNumber)}>Save</button>
                                                                         </span>
                                                                 }
                                                             </div>
@@ -175,10 +224,10 @@ export default function Modal(props: any) {
                                                                                 value={gender}
                                                                                 onChange={(e) => setGender(e.target.value)}                                                                            
                                                                             >
-                                                                                <option value={0}>Male</option>
-                                                                                <option value={1}>Female</option>
+                                                                                <option value='0'>Male</option>
+                                                                                <option value='1'>Female</option>
                                                                             </select>
-                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditGender(false)}>Save</button>
+                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => handleEditGender(props.userInfo.id, gender)}>Save</button>
                                                                         </span>
                                                                 }
                                                             </div>

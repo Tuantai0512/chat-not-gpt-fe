@@ -6,7 +6,7 @@ import HomeStyle from "../styles/home.module.scss";
 import Modal from "@/components/modal";
 import axios from "axios";
 import { useDispatch ,useSelector } from "react-redux";
-import { addToken} from "../stores/actions/userActions";
+import { addToken, saveData } from "../stores/actions/userActions";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +22,15 @@ const verifyToken = async (token: string) => {
   }
 };
 
+const getUserData = async(id:number) => {
+  try{
+    const res = await axios.get(`http://localhost:8000/api/v1/users?id=${id}`);
+    return res
+  }catch(error){
+    console.log(error);
+  }
+}
+
 export default function Home() {
   const router = useRouter();
   const [user, setUser] = useState({});
@@ -36,12 +45,15 @@ export default function Home() {
           router.push("/user/login");
           return;
         }
-        setUser(user);
+        getUserData(user.id).then((dataUser) => {
+          setUser(dataUser?.data?.users);
+          console.log(userInfoRedux);
+        })
       });
     } else {
       router.push("/user/login");
     }
-  }, [userInfoRedux.token]);
+  }, [userInfoRedux.token, userInfoRedux.data]);
 
   return (
     <main className={`${HomeStyle["chats-app"]} flex`}>
