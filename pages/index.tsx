@@ -47,7 +47,6 @@ export default function Home() {
         }
         getUserData(user.id).then((dataUser) => {
           setUser(dataUser?.data?.users);
-          console.log(userInfoRedux);
         })
       });
     } else {

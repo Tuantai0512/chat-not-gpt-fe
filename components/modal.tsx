@@ -4,12 +4,11 @@ import { useRouter } from 'next/router';
 import { useTheme } from "next-themes";
 import { Mukta } from '@next/font/google'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faUser, faEnvelope, faPhone, faVenusMars, faPencil, faCheck} from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from '@/stores/actions/modalActions'
 import { removeToken, editNameRedux, editEmailRedux } from '@/stores/actions/userActions';
 import axios from 'axios';
-import { log } from 'console';
 
 
 const mukta = Mukta({
@@ -33,7 +32,7 @@ export default function Modal(props: any) {
     const [editPhoneNumber, setEditPhoneNumber] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
     const [editGender, setEditGender] = useState(false);
-    const [gender,setGender] = useState('0');
+    const [gender, setGender] = useState('0');
     const cancelButtonRef = useRef(null)
     const dispatch = useDispatch();
     const modalStatusRedux = useSelector((state: any) => state.modal);
@@ -54,54 +53,54 @@ export default function Modal(props: any) {
         }
     }
 
-    const handleEditName = async(id: number, firstName: string, lastName: string) => {
-        try{
-            let res = await axios.put('http://localhost:8000/api/v1/edit-user',{
+    const handleEditName = async (id: number, firstName: string, lastName: string) => {
+        try {
+            let res = await axios.put('http://localhost:8000/api/v1/edit-user', {
                 id, firstName, lastName
             })
             setEditName(false)
             dispatch(editNameRedux(firstName, lastName));
             return res
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
     }
 
-    const handleEditEmail = async(id: number, email:string) => {
-        try{
-            let res = await axios.put('http://localhost:8000/api/v1/edit-user',{
+    const handleEditEmail = async (id: number, email: string) => {
+        try {
+            let res = await axios.put('http://localhost:8000/api/v1/edit-user', {
                 id, email
             })
             setEditEmail(false)
             dispatch(editEmailRedux(email));
             return res
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
     }
 
-    const handleEditPhoneNumber = async(id: number, phoneNumber:string) => {
-        try{
-            let res = await axios.put('http://localhost:8000/api/v1/edit-user',{
+    const handleEditPhoneNumber = async (id: number, phoneNumber: string) => {
+        try {
+            let res = await axios.put('http://localhost:8000/api/v1/edit-user', {
                 id, phoneNumber
             })
             setEditPhoneNumber(false)
             dispatch(editEmailRedux(phoneNumber));
             return res
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
     }
 
-    const handleEditGender = async(id: number, gender:string) => {
-        try{
-            let res = await axios.put('http://localhost:8000/api/v1/edit-user',{
+    const handleEditGender = async (id: number, gender: string) => {
+        try {
+            let res = await axios.put('http://localhost:8000/api/v1/edit-user', {
                 id, gender
             })
             setEditGender(false)
             dispatch(editEmailRedux(gender));
             return res
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
     }
@@ -167,68 +166,99 @@ export default function Modal(props: any) {
                                                 <div className="mt-2">
                                                     <p className="text-sm text-gray-500 dark:text-white">
                                                         <div>
-                                                            <div>
+                                                            <div className='flex'>
                                                                 {
                                                                     editName === false ?
-                                                                        <p className='py-1 flex justify-between items-center'>
-                                                                            {`${props.userInfo.firstName} ${props.userInfo.lastName}`}
-                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditName(true)}>Edit</button>
+                                                                        <p className='py-1 flex justify-between items-center w-full'>
+                                                                            <span>
+                                                                                <FontAwesomeIcon icon={faUser} className='pr-2' />
+                                                                                {`${props.userInfo.firstName} ${props.userInfo.lastName}`}
+                                                                            </span>
+                                                                            <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full' onClick={() => setEditName(true)}><FontAwesomeIcon icon={faPencil} /></button>
                                                                         </p>
                                                                         :
-                                                                        <span className='py-1 flex justify-between items-center'>
-                                                                            <input type="text" placeholder='First Name' name='firstName' onChange={(e) => setFirstName(e.target.value)}/>
-                                                                            <input type="text" placeholder='Last Name' name='lastName' onChange={(e) => setLastName(e.target.value)}/>
-                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => handleEditName(props.userInfo.id, firstName, lastName)}>Save</button>
-                                                                        </span>
+                                                                        <div className='py-1 flex justify-between items-center w-full'>
+                                                                            <span>
+                                                                                <FontAwesomeIcon icon={faUser} className='pr-2' />
+                                                                                <input type="text" placeholder='First Name' name='firstName' onChange={(e) => setFirstName(e.target.value)} />
+                                                                                <input type="text" placeholder='Last Name' name='lastName' onChange={(e) => setLastName(e.target.value)} />
+                                                                            </span>
+                                                                            <span>
+                                                                                <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full mr-3' onClick={() => setEditName(false)}><FontAwesomeIcon icon={faXmark} /></button>
+                                                                                <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full' onClick={() => handleEditName(props.userInfo.id, firstName, lastName)}><FontAwesomeIcon icon={faCheck} /></button>
+                                                                            </span>
+                                                                        </div>
                                                                 }
                                                             </div>
                                                             <div>
                                                                 {
                                                                     editEmail === false ?
                                                                         <p className='py-1 flex justify-between items-center'>
-                                                                            {props.userInfo.email}
-                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditEmail(true)}>Edit</button>
+                                                                            <span>
+                                                                                <FontAwesomeIcon icon={faEnvelope} className='pr-2' />
+                                                                                {props.userInfo.email}
+                                                                            </span>
+                                                                            <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full' onClick={() => setEditEmail(true)}><FontAwesomeIcon icon={faPencil} /></button>
                                                                         </p>
                                                                         :
                                                                         <span className='py-1 flex justify-between items-center'>
-                                                                            <input type="text" placeholder='Email' name='email' onChange={(e) => setEmail(e.target.value)}/>
-                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => handleEditEmail(props.userInfo.id, email)}>Save</button>
+                                                                            <FontAwesomeIcon icon={faEnvelope} className='pr-2' />
+                                                                            <input className='w-full mr-2' type="text" placeholder='Email' name='email' onChange={(e) => setEmail(e.target.value)} />
+                                                                            <span className='flex'>
+                                                                                <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full mr-3' onClick={() => setEditEmail(false)}><FontAwesomeIcon icon={faXmark} /></button>
+                                                                                <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full' onClick={() => handleEditEmail(props.userInfo.id, email)}><FontAwesomeIcon icon={faCheck} /></button>
+                                                                            </span>
                                                                         </span>
-
                                                                 }
                                                             </div>
                                                             <div>
                                                                 {
                                                                     editPhoneNumber === false ?
                                                                         <p className='py-1 flex justify-between items-center'>
-                                                                            {props.userInfo.phoneNumber}
-                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditPhoneNumber(true)}>Edit</button>
+                                                                            <span>
+                                                                                <FontAwesomeIcon icon={faPhone} className='pr-2' />
+                                                                                {props.userInfo.phoneNumber}
+                                                                            </span>
+                                                                            <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full' onClick={() => setEditPhoneNumber(true)}><FontAwesomeIcon icon={faPencil} /></button>
                                                                         </p>
                                                                         :
-                                                                        <span className='py-1 flex justify-between items-center'>
-                                                                            <input type="text" placeholder='Mobile' name='phoneNumber' onChange={(e) => setPhoneNumber(e.target.value)}/>
-                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => handleEditPhoneNumber(props.userInfo.id, phoneNumber)}>Save</button>
-                                                                        </span>
+                                                                        <div className='py-1 flex justify-between items-center'>
+                                                                            <FontAwesomeIcon icon={faPhone} className='pr-2' />
+                                                                            <input className='w-full mr-2' type="text" placeholder='Mobile' name='phoneNumber' onChange={(e) => setPhoneNumber(e.target.value)} />
+                                                                            <span className='flex'>
+                                                                                <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full mr-3' onClick={() => setEditPhoneNumber(false)}><FontAwesomeIcon icon={faXmark} /></button>
+                                                                                <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full' onClick={() => handleEditPhoneNumber(props.userInfo.id, phoneNumber)}><FontAwesomeIcon icon={faCheck} /></button>
+                                                                            </span>
+                                                                        </div>
                                                                 }
                                                             </div>
                                                             <div>
                                                                 {
                                                                     editGender === false ?
                                                                         <p className='py-1 flex justify-between items-center'>
-                                                                            {props.userInfo.gender === 0 ? 'Male' : 'Female'}
-                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => setEditGender(true)}>Edit</button>
+                                                                            <span>
+                                                                                <FontAwesomeIcon icon={faVenusMars} className='pr-2' />
+                                                                                {props.userInfo.gender === 0 ? 'Male' : 'Female'}
+                                                                            </span>
+                                                                            <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full' onClick={() => setEditGender(true)}><FontAwesomeIcon icon={faPencil} /></button>
                                                                         </p>
                                                                         :
-                                                                        <span className='py-1 flex justify-between items-center'>
-                                                                            <select
-                                                                                value={gender}
-                                                                                onChange={(e) => setGender(e.target.value)}                                                                            
-                                                                            >
-                                                                                <option value='0'>Male</option>
-                                                                                <option value='1'>Female</option>
-                                                                            </select>
-                                                                            <button className='px-4 py-1 border-2 rounded-lg bg-gray-200' onClick={() => handleEditGender(props.userInfo.id, gender)}>Save</button>
-                                                                        </span>
+                                                                        <div className='py-1 flex justify-between items-center'>
+                                                                            <span>
+                                                                                <FontAwesomeIcon icon={faVenusMars} className='pr-2' />
+                                                                                <select
+                                                                                    value={gender}
+                                                                                    onChange={(e) => setGender(e.target.value)}
+                                                                                >
+                                                                                    <option value='0'>Male</option>
+                                                                                    <option value='1'>Female</option>
+                                                                                </select>
+                                                                            </span>
+                                                                            <span>
+                                                                                <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full mr-3' onClick={() => setEditGender(false)}><FontAwesomeIcon icon={faXmark} /></button>
+                                                                                <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full' onClick={() => handleEditGender(props.userInfo.id, gender)}><FontAwesomeIcon icon={faCheck} /></button>
+                                                                            </span>
+                                                                        </div>
                                                                 }
                                                             </div>
                                                         </div>
