@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Inter } from "next/font/google";
 import ChatsNav from "../components/chatsNav";
+import Message from "@/components/message";
 import HomeStyle from "../styles/home.module.scss";
 import Modal from "@/components/modal";
 import axios from "axios";
-import { useDispatch ,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToken, saveData } from "../stores/actions/userActions";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,11 +23,11 @@ const verifyToken = async (token: string) => {
   }
 };
 
-const getUserData = async(id:number) => {
-  try{
+const getUserData = async (id: number) => {
+  try {
     const res = await axios.get(`http://localhost:8000/api/v1/users?id=${id}`);
     return res
-  }catch(error){
+  } catch (error) {
     console.log(error);
   }
 }
@@ -57,9 +58,21 @@ export default function Home() {
   return (
     <main className={`${HomeStyle["chats-app"]} flex`}>
       <ChatsNav userInfo={user} />
-      <div className="w-3/4 dark:bg-gray-700 dark:text-white">
-        <div>Welcome to my chat app</div>
-        <Modal textBtn="Account settings" userInfo={user}/>
+      <div className="w-3/4 dark:bg-gray-700 dark:text-white flex justify-between flex-col">
+        <div className="message-box">
+          <Message own={false} />
+          <Message own={true} />
+          <Message own={false} />
+        </div>
+        <div className="flex justify-center">
+          <input
+            type="text"
+            placeholder="Send a message"
+            className="w-3/5 px-2 py-2"
+          />
+          <button className="block px-2 py-2 border-2 rounded-lg">Send</button>
+        </div>
+        <Modal textBtn="Account settings" userInfo={user} />
       </div>
     </main>
   );
