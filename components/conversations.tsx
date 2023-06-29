@@ -22,8 +22,6 @@ export default function Conversation (props: any) {
         getUser(friendId[0])
     },[friendId[0]])
 
-    console.log(user);
-
     return(
         <div className="flex items-center px-2 py-1 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-transparent hover:bg-gray-800 group">
             <Image 

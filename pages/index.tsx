@@ -7,7 +7,7 @@ import HomeStyle from "../styles/home.module.scss";
 import Modal from "@/components/modal";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addToken, saveData } from "../stores/actions/userActions";
+import { addToken } from "../stores/actions/userActions";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,10 +33,13 @@ const getUserData = async (id: number) => {
 }
 
 export default function Home() {
+  //handle user login
   const router = useRouter();
   const [user, setUser] = useState({});
   const dispatch = useDispatch();
   const userInfoRedux = useSelector((state: any) => state.user);
+  const currentChat = useSelector((state: any) => state.currentChat);
+  const { conversation } = currentChat;
   useEffect(() => {
     const token = localStorage.getItem("Token");
     dispatch(addToken(token));
@@ -55,15 +58,41 @@ export default function Home() {
     }
   }, [userInfoRedux.token, userInfoRedux.data]);
 
+  //handle chat message
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    const getMessage = async() => {
+      try{
+        const res = await axios.get(`http://localhost:8000/api/v1/message/${conversation?._id}`);
+        setMessages(res?.data)
+      }catch(err){
+        console.log(err)
+      }
+    }
+    getMessage();
+  },[conversation?._id])
+
+
   return (
     <main className={`${HomeStyle["chats-app"]} flex`}>
       <ChatsNav userInfo={user} />
       <div className="w-3/4 dark:bg-gray-700 dark:text-white flex justify-between flex-col">
-        <div className="message-box">
-          <Message own={false} />
-          <Message own={true} />
-          <Message own={false} />
-        </div>
+        {
+          conversation ?
+            <div className="message-box">
+              {
+                messages.length !== 0 ? 
+                messages.map((message) => (
+                  <Message message={message} own={user.id.toString()} />
+                ))
+                :
+                <span className={`${HomeStyle.noConversationText}`}>Enter the first message to conversation.</span>
+              }
+            </div>
+            :
+            <span className={`${HomeStyle.noConversationText}`}>Open a conversation to start a chat.</span>
+        }
         <div className="flex justify-center">
           <input
             type="text"
