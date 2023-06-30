@@ -9,6 +9,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../stores/actions/userActions";
 import { useRef } from "react";
+import { io } from "socket.io-client";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -96,6 +97,11 @@ export default function Home() {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
+  //handle socket.io
+  const [socket, setSocket] = useState(null);
+  useEffect(() => {
+    setSocket(io('ws://localhost:9000'))
+  },[])
 
   return (
     <main className={`${HomeStyle["chats-app"]} flex`}>
