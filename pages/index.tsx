@@ -59,7 +59,8 @@ export default function Home() {
   }, [userInfoRedux.token, userInfoRedux.data]);
 
   //handle chat message
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<any | never[]>([]);
+  const [ newMessage, setNewMessage] = useState('');
 
   useEffect(() => {
     const getMessage = async() => {
@@ -73,6 +74,21 @@ export default function Home() {
     getMessage();
   },[conversation?._id])
 
+  const handleSend = async() => {
+    const message = {
+      sender: user.id,
+      text: newMessage,
+      conversationId: conversation?._id
+    };
+    try{
+      let res = await axios.post('http://localhost:8000/api/v1/message', message);
+      setMessages([...messages, res?.data]);
+      setNewMessage('')
+    }catch(err){
+      console.log(err)
+    }
+  }
+
 
   return (
     <main className={`${HomeStyle["chats-app"]} flex`}>
@@ -83,7 +99,7 @@ export default function Home() {
             <div className="message-box">
               {
                 messages.length !== 0 ? 
-                messages.map((message) => (
+                messages.map((message: object) => (
                   <Message message={message} own={user.id.toString()} />
                 ))
                 :
@@ -94,12 +110,13 @@ export default function Home() {
             <span className={`${HomeStyle.noConversationText}`}>Open a conversation to start a chat.</span>
         }
         <div className="flex justify-center">
-          <input
-            type="text"
-            placeholder="Send a message"
+          <textarea
+            placeholder="Write something...."
             className="w-3/5 px-2 py-2"
+            onChange={(e) => setNewMessage(e.target.value)}
+            value={newMessage}
           />
-          <button className="block px-2 py-2 border-2 rounded-lg">Send</button>
+          <button className="block px-2 py-2 border-2 rounded-lg" onClick={handleSend}>Send</button>
         </div>
         <Modal textBtn="Account settings" userInfo={user} />
       </div>
