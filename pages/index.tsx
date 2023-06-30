@@ -8,6 +8,7 @@ import Modal from "@/components/modal";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../stores/actions/userActions";
+import { useRef } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -60,34 +61,40 @@ export default function Home() {
 
   //handle chat message
   const [messages, setMessages] = useState<any | never[]>([]);
-  const [ newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState('');
 
   useEffect(() => {
-    const getMessage = async() => {
-      try{
+    const getMessage = async () => {
+      try {
         const res = await axios.get(`http://localhost:8000/api/v1/message/${conversation?._id}`);
         setMessages(res?.data)
-      }catch(err){
+      } catch (err) {
         console.log(err)
       }
     }
     getMessage();
-  },[conversation?._id])
+  }, [conversation?._id])
 
-  const handleSend = async() => {
+  const handleSend = async () => {
     const message = {
       sender: user.id,
       text: newMessage,
       conversationId: conversation?._id
     };
-    try{
+    try {
       let res = await axios.post('http://localhost:8000/api/v1/message', message);
       setMessages([...messages, res?.data]);
       setNewMessage('')
-    }catch(err){
+    } catch (err) {
       console.log(err)
     }
   }
+
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages])
 
 
   return (
@@ -96,14 +103,16 @@ export default function Home() {
       <div className="w-3/4 dark:bg-gray-700 dark:text-white flex justify-between flex-col">
         {
           conversation ?
-            <div className="message-box">
+            <div className={HomeStyle['message-box']}>
               {
-                messages.length !== 0 ? 
-                messages.map((message: object) => (
-                  <Message message={message} own={user.id.toString()} />
-                ))
-                :
-                <span className={`${HomeStyle.noConversationText}`}>Enter the first message to conversation.</span>
+                messages.length !== 0 ?
+                  messages.map((message: object) => (
+                    <div ref={scrollRef}>
+                      <Message message={message} own={user.id.toString()} />
+                    </div>
+                  ))
+                  :
+                  <span className={`${HomeStyle.noConversationText}`}>Enter the first message to conversation.</span>
               }
             </div>
             :
