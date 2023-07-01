@@ -25,6 +25,8 @@ export default function ChatsNav(props: any) {
         getConversations(props.userInfo.id)
     }, [props.userInfo.id])
 
+    console.log("online: ",props.onlineContact);
+
     return (
         <div className={`w-1/4 h-screen flex-col bg-gray-900 justify-between ${chats['chats-nav']}`}>
             <input className={`${chats['chats-search-user']} `} type="text" placeholder="Search" value={search} name="username" onChange={(e) => { setSearch(e.target.value) }}></input>
@@ -33,7 +35,7 @@ export default function ChatsNav(props: any) {
                 {
                     conversations.map((conversation) => (
                         <div onClick={() => dispatch(saveCurrentChat(conversation))}>
-                            <Conversation conversation={conversation} currentUser={props.userInfo.id.toString()} />
+                            <Conversation conversation={conversation} currentUser={props.userInfo.id.toString()} online={props.onlineContact}/>
                         </div>
                     ))
                 }

@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../stores/actions/userActions";
 import { useRef } from "react";
 import { io } from "socket.io-client";
-import { data } from "autoprefixer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -139,16 +138,19 @@ export default function Home() {
       setMessages((prev: any) => [...prev, arrivalMessage])
   }, [arrivalMessage, currentChat])
 
+  const [ onlineContact, setOnlineContact] = useState([]);
+
   useEffect(() => {
     socket?.emit('addUser', user.id);
     socket?.on('getUser', (users: any) => {
-      console.log('users: ', users)
+      console.log('users: ', users);
+      setOnlineContact(users);
     })
   }, [user])
 
   return (
     <main className={`${HomeStyle["chats-app"]} flex`}>
-      <ChatsNav userInfo={user} />
+      <ChatsNav userInfo={user} onlineContact={onlineContact}/>
       <div className="w-3/4 dark:bg-gray-700 dark:text-white flex justify-between flex-col">
         {
           conversation ?
