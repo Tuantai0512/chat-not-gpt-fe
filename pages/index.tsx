@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../stores/actions/userActions";
 import { useRef } from "react";
 import { io } from "socket.io-client";
+import { data } from "autoprefixer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,10 +35,19 @@ const getUserData = async (id: number) => {
   }
 }
 
+interface IUser {
+  id: string | number
+}
+
+interface IArrivalMessage {
+  sender: any,
+  text: any
+}
+
 export default function Home() {
   //handle user login
   const router = useRouter();
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<IUser>({ id: '00000' });
   const dispatch = useDispatch();
   const userInfoRedux = useSelector((state: any) => state.user);
   const currentChat = useSelector((state: any) => state.currentChat);
@@ -63,6 +73,8 @@ export default function Home() {
   //handle chat message
   const [messages, setMessages] = useState<any | never[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const [arrivalMessage, setArrivalMessage] = useState<IArrivalMessage | {}>({});
+
 
   useEffect(() => {
     const getMessage = async () => {
@@ -82,6 +94,17 @@ export default function Home() {
       text: newMessage,
       conversationId: conversation?._id
     };
+
+    const receiverId = conversation?.members.find((member: any) => member !== user.id.toString());
+
+    socket?.emit('sendMessage', {
+      senderId: user.id.toString(),
+      receiverId: parseInt(receiverId),
+      text: newMessage
+    })
+
+    console.log(arrivalMessage);
+
     try {
       let res = await axios.post('http://localhost:8000/api/v1/message', message);
       setMessages([...messages, res?.data]);
@@ -98,10 +121,30 @@ export default function Home() {
   }, [messages])
 
   //handle socket.io
+
   const [socket, setSocket] = useState(null);
   useEffect(() => {
-    setSocket(io('ws://localhost:9000'))
-  },[])
+    setSocket(io('ws://localhost:9000'));
+  }, [])
+
+  socket?.on('getMessage', (data: any) => {
+    setArrivalMessage({
+      sender: data.senderId,
+      text: data.text
+    })
+  })
+
+  useEffect(() => {
+    arrivalMessage && conversation?.members.includes(arrivalMessage.sender) &&
+      setMessages((prev: any) => [...prev, arrivalMessage])
+  }, [arrivalMessage, currentChat])
+
+  useEffect(() => {
+    socket?.emit('addUser', user.id);
+    socket?.on('getUser', (users: any) => {
+      console.log('users: ', users)
+    })
+  }, [user])
 
   return (
     <main className={`${HomeStyle["chats-app"]} flex`}>
