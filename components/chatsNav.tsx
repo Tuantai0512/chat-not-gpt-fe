@@ -25,7 +25,6 @@ export default function ChatsNav(props: any) {
         getConversations(props.userInfo.id)
     }, [props.userInfo.id])
 
-    console.log("online: ",props.onlineContact);
 
     return (
         <div className={`w-1/4 h-screen flex-col bg-gray-900 justify-between ${chats['chats-nav']}`}>

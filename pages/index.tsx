@@ -102,8 +102,6 @@ export default function Home() {
       text: newMessage
     })
 
-    console.log(arrivalMessage);
-
     try {
       let res = await axios.post('http://localhost:8000/api/v1/message', message);
       setMessages([...messages, res?.data]);
@@ -143,7 +141,6 @@ export default function Home() {
   useEffect(() => {
     socket?.emit('addUser', user.id);
     socket?.on('getUser', (users: any) => {
-      console.log('users: ', users);
       setOnlineContact(users);
     })
   }, [user])

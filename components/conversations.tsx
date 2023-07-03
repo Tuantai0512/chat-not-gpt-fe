@@ -11,7 +11,6 @@ export default function Conversation(props: any) {
     const friendId = props.conversation.members.find((member: string) => member !== props.currentUser)
 
     const checkOnline = props.online.some((user: any) => user.userId === parseInt(friendId));
-    console.log(checkOnline);
 
     useEffect(() => {
         const getUser = async (friendId: string) => {

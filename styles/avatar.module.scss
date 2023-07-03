@@ -1,0 +1,22 @@
+.avatar{
+    width: 100px;
+    height: 100px;
+    border-radius:50% ;
+    object-fit: cover;
+    border: 3px solid rgb(107 114 128);
+}
+
+.input-avatar{
+    width: 30px;
+    height: 30px;
+    border: 1px solid #000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    right: calc(47% - 40px);
+    background-color: rgb(241 245 249);
+    cursor: pointer;
+}

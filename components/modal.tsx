@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from '@/stores/actions/modalActions'
 import { removeToken, editNameRedux, editEmailRedux } from '@/stores/actions/userActions';
 import axios from 'axios';
-
+import PrevAvatar from './previewAvatar';
 
 const mukta = Mukta({
     subsets: ['latin'],
@@ -166,6 +166,7 @@ export default function Modal(props: any) {
                                                 <div className="mt-2">
                                                     <p className="text-sm text-gray-500 dark:text-white">
                                                         <div>
+                                                            <PrevAvatar />
                                                             <div className='flex'>
                                                                 {
                                                                     editName === false ?
