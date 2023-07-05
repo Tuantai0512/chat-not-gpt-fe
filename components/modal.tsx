@@ -166,7 +166,7 @@ export default function Modal(props: any) {
                                                 <div className="mt-2">
                                                     <p className="text-sm text-gray-500 dark:text-white">
                                                         <div>
-                                                            <PrevAvatar />
+                                                            <PrevAvatar uid={props.userInfo.id}/>
                                                             <div className='flex'>
                                                                 {
                                                                     editName === false ?
