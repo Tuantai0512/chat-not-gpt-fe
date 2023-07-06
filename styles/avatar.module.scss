@@ -4,6 +4,13 @@
     border-radius:50% ;
     object-fit: cover;
     border: 3px solid rgb(107 114 128);
+    &-dropdown{
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+    }
 }
 
 .input-avatar{
@@ -20,3 +27,4 @@
     background-color: rgb(241 245 249);
     cursor: pointer;
 }
+

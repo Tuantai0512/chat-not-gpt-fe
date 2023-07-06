@@ -34,13 +34,13 @@ export default function ChatsNav(props: any) {
                 {
                     conversations.map((conversation) => (
                         <div onClick={() => dispatch(saveCurrentChat(conversation))}>
-                            <Conversation conversation={conversation} currentUser={props.userInfo.id.toString()} online={props.onlineContact}/>
+                            <Conversation conversation={conversation} currentUser={props.userInfo.id.toString()} online={props.onlineContact} />
                         </div>
                     ))
                 }
             </div>
             <div className={`${chats['chats-profile']} flex items-center justify-between`}>
-                <Dropdown fullname={`${props.userInfo.firstName} ${props.userInfo.lastName}`} />
+                <Dropdown fullname={`${props.userInfo.firstName} ${props.userInfo.lastName}`} userAvatar={props.userInfo.Avatar} />
             </div>
         </div>
     )

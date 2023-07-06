@@ -19,25 +19,8 @@ const UploadAvatar = async (formData: any) => {
     }
 }
 
-const getUserData = async (id: number) => {
-    try {
-      const res = await axios.get(`http://localhost:8000/api/v1/users?id=${id}`);
-      return res
-    } catch (error) {
-      console.log(error);
-    }
-}
-
 export default function PrevAvatar(props: any) {
     const [avatar, setAvatar] = useState();
-
-    useEffect(() => {
-        getUserData(props.uid)
-        .then(res => setAvatar(res?.data?.users?.Avatar))
-        .catch(err => console.log(err))
-    }, [avatar])
-
-    console.log(avatar);
 
     const handlePrevAvatar = (e: any) => {
         const file = e.target.files[0];

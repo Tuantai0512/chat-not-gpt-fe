@@ -8,6 +8,8 @@ export default function Conversation(props: any) {
 
     const [user, setUser] = useState<null | string>(null);
 
+    const [avatar, setAvatar] = useState('')
+
     const friendId = props.conversation.members.find((member: string) => member !== props.currentUser)
 
     const checkOnline = props.online.some((user: any) => user.userId === parseInt(friendId));
@@ -16,7 +18,8 @@ export default function Conversation(props: any) {
         const getUser = async (friendId: string) => {
             try {
                 const res = await axios.get(`http://localhost:8000/api/v1/users/?id=${friendId}`);
-                setUser(`${res?.data?.users?.firstName} ${res?.data?.users?.lastName}`)
+                setUser(`${res?.data?.users?.firstName} ${res?.data?.users?.lastName}`);
+                setAvatar(res?.data?.users?.Avatar)
             } catch (err) {
                 console.log(err)
             }
@@ -24,13 +27,19 @@ export default function Conversation(props: any) {
         getUser(friendId[0])
     }, [friendId[0]])
 
+    console.log(avatar)
+
     return (
         <div className="flex items-center px-2 py-1 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-transparent hover:bg-gray-800 group">
-            <Image
-                src={Avatar}
-                alt='user profile picture'
-                className={conversation["conversation-img"]}
-            />
+            {
+                avatar ? <img src={`http://localhost:8000/images/${avatar}`} alt="friendAvatar" className={conversation["conversation-img"]}/>
+                :
+                <Image
+                    src={Avatar}
+                    alt='user profile picture'
+                    className={conversation["conversation-img"]}
+                />
+            }
                 <div className={`${conversation["online-icon"]} ${checkOnline ? ' bg-green-400' : ' bg-neutral-400'}`}></div>
             <span className="text-white px-2">{user}</span>
         </div>

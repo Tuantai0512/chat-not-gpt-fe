@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons"
 import { useDispatch, useSelector } from "react-redux";
 import { openModal } from '@/stores/actions/modalActions'
+import avatarStyle from '../styles/avatar.module.scss'
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -12,12 +13,15 @@ function classNames(...classes: string[]) {
 export default function Dropdown(props: any) {
   const dispatch = useDispatch();
   const modalStatusRedux = useSelector((state: any) => state.modal);
-  const { isOpen } = modalStatusRedux
+  const { isOpen } = modalStatusRedux;
   return (
     <Menu as="div" className="relative inline-flex text-left w-full">
       <div className="w-full">
         <Menu.Button className="inline-flex w-full text-white justify-between gap-x-1.5 rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 hover:text-black">
-          {props.fullname}
+          <div className='flex items-center'>
+            <img src={`http://localhost:8000/images/${props.userAvatar}`} alt='user avatar' className={avatarStyle['avatar-dropdown']}/>
+            {props.fullname}
+          </div>
           <FontAwesomeIcon icon={faEllipsis} />
         </Menu.Button>
       </div>
