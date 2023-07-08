@@ -17,7 +17,7 @@ export default function Dropdown(props: any) {
   return (
     <Menu as="div" className="relative inline-flex text-left w-full">
       <div className="w-full">
-        <Menu.Button className="inline-flex w-full text-white justify-between gap-x-1.5 rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 hover:text-black">
+        <Menu.Button className="inline-flex w-full text-white justify-between items-center gap-x-1.5 rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 hover:text-black">
           <div className='flex items-center'>
             <img src={`http://localhost:8000/images/${props.userAvatar}`} alt='user avatar' className={avatarStyle['avatar-dropdown']}/>
             {props.fullname}

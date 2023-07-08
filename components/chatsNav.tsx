@@ -34,7 +34,7 @@ export default function ChatsNav(props: any) {
                 {
                     conversations.map((conversation) => (
                         <div onClick={() => dispatch(saveCurrentChat(conversation))}>
-                            <Conversation conversation={conversation} currentUser={props.userInfo.id.toString()} online={props.onlineContact} />
+                            <Conversation conversation={conversation} currentUser={props.userInfo.id.toString()} online={props.onlineContact} selected={false}/>
                         </div>
                     ))
                 }

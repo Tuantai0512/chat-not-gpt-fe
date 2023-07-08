@@ -5,11 +5,14 @@ import ChatsNav from "../components/chatsNav";
 import Message from "@/components/message";
 import HomeStyle from "../styles/home.module.scss";
 import Modal from "@/components/modal";
+import Conversation from "@/components/conversations";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../stores/actions/userActions";
 import { useRef } from "react";
 import { io } from "socket.io-client";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -145,10 +148,17 @@ export default function Home() {
     })
   }, [user])
 
+  const handleKeyDown = (event: any) => {
+    if (event.key === 'Enter') {
+      handleSend();
+    }
+  }
+
   return (
     <main className={`${HomeStyle["chats-app"]} flex`}>
       <ChatsNav userInfo={user} onlineContact={onlineContact}/>
       <div className="w-3/4 dark:bg-gray-700 dark:text-white flex justify-between flex-col">
+      {conversation && <Conversation conversation={conversation} currentUser={user.id.toString()} online={onlineContact} selected={true}/>}
         {
           conversation ?
             <div className={HomeStyle['message-box']}>
@@ -166,14 +176,16 @@ export default function Home() {
             :
             <span className={`${HomeStyle.noConversationText}`}>Open a conversation to start a chat.</span>
         }
-        <div className="flex justify-center">
-          <textarea
+        <div className="flex justify-center items-center">
+          <input
+            type="text"
             placeholder="Write something...."
-            className="w-3/5 px-2 py-2"
+            className="w-3/5 pl-4 pr-12 py-2 flex items-center border-2 bg-transparent rounded-full"
             onChange={(e) => setNewMessage(e.target.value)}
             value={newMessage}
+            onKeyDown={handleKeyDown}
           />
-          <button className="block px-2 py-2 border-2 rounded-lg" onClick={handleSend}>Send</button>
+          <button className={HomeStyle['send-icon']} onClick={handleSend}><FontAwesomeIcon icon={faPaperPlane} /></button>
         </div>
         <Modal textBtn="Account settings" userInfo={user} />
       </div>

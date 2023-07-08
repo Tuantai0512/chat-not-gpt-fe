@@ -27,9 +27,22 @@ export default function Conversation(props: any) {
         getUser(friendId[0])
     }, [friendId[0]])
 
-    console.log(avatar)
-
     return (
+        props.selected ?
+        <div className="flex items-center px-4 py-1 relative cursor-pointer break-all pr-[4.5rem] )} )} bg-transparent group border-b sticky">
+            {
+                avatar ? <img src={`http://localhost:8000/images/${avatar}`} alt="friendAvatar" className={conversation["conversation-img-selected"]}/>
+                :
+                <Image
+                    src={Avatar}
+                    alt='user profile picture'
+                    className={conversation["conversation-img-selected"]}
+                />
+            }
+                <div className={`${conversation["online-icon-selected"]} ${checkOnline ? ' bg-green-400' : ' bg-neutral-400'}`}></div>
+            <span className="text-black px-5 dark:text-white text-2xl font-bold">{user}</span>
+        </div>
+        :
         <div className="flex items-center px-2 py-1 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-transparent hover:bg-gray-800 group">
             {
                 avatar ? <img src={`http://localhost:8000/images/${avatar}`} alt="friendAvatar" className={conversation["conversation-img"]}/>

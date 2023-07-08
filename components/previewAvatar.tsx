@@ -20,7 +20,7 @@ const UploadAvatar = async (formData: any) => {
 }
 
 export default function PrevAvatar(props: any) {
-    const [avatar, setAvatar] = useState();
+    const [avatar, setAvatar] = useState(props.userAvatar);
 
     const handlePrevAvatar = (e: any) => {
         const file = e.target.files[0];
@@ -37,19 +37,6 @@ export default function PrevAvatar(props: any) {
         .then(res => setAvatar(res?.data?.image?.filename))
         .catch(err => console.log(err))
     }
-
-    const CheckImage = (path: string) =>  {
-        axios
-          .get(path)
-          .then(() => {
-            return true;
-          })
-          .catch(() => {
-            return false;
-          });
-    }
-
-    
 
     return (
         <div className='flex justify-center relative'>

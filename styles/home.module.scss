@@ -9,6 +9,15 @@
 }
 
 .message-box{
-    height: calc(100vh - 64px);
+    height: calc(100vh - 117px);
     overflow-y: scroll;
+}
+
+.send-icon{
+    position: relative;
+    left: -40px;
+    border-radius: 50%;
+    width: 40px;
+    background-color: darkgrey;
+    height: 40px;
 }
