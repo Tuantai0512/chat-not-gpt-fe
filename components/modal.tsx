@@ -181,8 +181,8 @@ export default function Modal(props: any) {
                                                                         <div className='py-1 flex justify-between items-center w-full'>
                                                                             <span>
                                                                                 <FontAwesomeIcon icon={faUser} className='pr-2' />
-                                                                                <input className='bg-transparent' type="text" placeholder='First Name' name='firstName' onChange={(e) => setFirstName(e.target.value)} />
-                                                                                <input className='bg-transparent' type="text" placeholder='Last Name' name='lastName' onChange={(e) => setLastName(e.target.value)} />
+                                                                                <input className='bg-transparent outline-none' type="text" placeholder='First Name' name='firstName' onChange={(e) => setFirstName(e.target.value)} />
+                                                                                <input className='bg-transparent outline-none' type="text" placeholder='Last Name' name='lastName' onChange={(e) => setLastName(e.target.value)} />
                                                                             </span>
                                                                             <span>
                                                                                 <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full mr-3 dark:text-gray-600' onClick={() => setEditName(false)}><FontAwesomeIcon icon={faXmark} /></button>
@@ -204,7 +204,7 @@ export default function Modal(props: any) {
                                                                         :
                                                                         <span className='py-1 flex justify-between items-center'>
                                                                             <FontAwesomeIcon icon={faEnvelope} className='pr-2' />
-                                                                            <input className='w-full mr-2 bg-transparent' type="text" placeholder='Email' name='email' onChange={(e) => setEmail(e.target.value)} />
+                                                                            <input className='w-full mr-2 bg-transparent outline-none' type="text" placeholder='Email' name='email' onChange={(e) => setEmail(e.target.value)} />
                                                                             <span className='flex'>
                                                                                 <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full mr-3 dark:text-gray-600' onClick={() => setEditEmail(false)}><FontAwesomeIcon icon={faXmark} /></button>
                                                                                 <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full dark:text-gray-600' onClick={() => handleEditEmail(props.userInfo.id, email)}><FontAwesomeIcon icon={faCheck} /></button>
@@ -225,7 +225,7 @@ export default function Modal(props: any) {
                                                                         :
                                                                         <div className='py-1 flex justify-between items-center'>
                                                                             <FontAwesomeIcon icon={faPhone} className='pr-2' />
-                                                                            <input className='w-full mr-2 bg-transparent' type="text" placeholder='Mobile' name='phoneNumber' onChange={(e) => setPhoneNumber(e.target.value)} />
+                                                                            <input className='w-full mr-2 bg-transparent outline-none' type="text" placeholder='Mobile' name='phoneNumber' onChange={(e) => setPhoneNumber(e.target.value)} />
                                                                             <span className='flex'>
                                                                                 <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full mr-3 dark:text-gray-600' onClick={() => setEditPhoneNumber(false)}><FontAwesomeIcon icon={faXmark} /></button>
                                                                                 <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full dark:text-gray-600' onClick={() => handleEditPhoneNumber(props.userInfo.id, phoneNumber)}><FontAwesomeIcon icon={faCheck} /></button>
