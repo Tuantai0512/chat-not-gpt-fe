@@ -10,26 +10,40 @@ import Avatar from "../public/l60Hf.png"
 import Image from "next/image";
 
 
+
 export default function ChatsNav(props: any) {
+    interface IUser {
+        id: string | number,
+        Avatar: string,
+        firstName: string,
+        lastName: string
+    }
+    
     const [search, setSearch] = useState('')
-
+    
     const [result, setResult] = useState([]);
-
+    
     const [conversations, setConversations] = useState([]);
+    
+    const [newConversations, setNewConversations] = useState(null);
+
+    useEffect(() => {
+        setNewConversations(props.newConversation);
+    },[props.newConversation])
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        const getConversations = async (userId: string) => {
-            try {
-                const res = await axios.get(`http://localhost:8000/api/v1/conversation/${userId}`);
-                setConversations(res?.data)
-            } catch (err) {
-                console.log(err)
-            }
+    const getConversations = async (userId: string) => {
+        try {
+            const res = await axios.get(`http://localhost:8000/api/v1/conversation/${userId}`);
+            setConversations(res?.data)
+        } catch (err) {
+            console.log(err)
         }
+    }
+    useEffect(() => {
         getConversations(props.userInfo.id)
-    }, [props.userInfo.id])
+    }, [props.userInfo.id, newConversations])
 
 
     const handleSearchUser = async (event: any) => {
@@ -38,11 +52,30 @@ export default function ChatsNav(props: any) {
             if (searchUI)
                 if (search) {
                     searchUI.style.display = "block";
+                    const res = await axios.get(`http://localhost:8000/api/v1/search-users/${search}`)
+                    setResult(res?.data);
                 } else {
                     searchUI.style.display = "none";
                 }
-            const res = await axios.get(`http://localhost:8000/api/v1/search-users/${search}`)
-            setResult(res?.data);
+        }
+    }
+
+    const addConversation = async(senderId: (string | number), receiverId: (string | number)) => {
+        let checkReceiverId = false;
+        conversations.forEach((conversation) => {
+            if(conversation.members.includes(receiverId.toString())){
+                checkReceiverId = true
+            }
+        });
+        if(checkReceiverId){
+            console.log('Conversation already exist!')
+        }else{
+            const res = await axios.post('http://localhost:8000/api/v1/conversation',{
+                senderId: senderId.toString(), receiverId: receiverId.toString()
+            });
+            console.log(res);
+            getConversations(props.userInfo.id);
+            props.sendNewConversation(res?.data, receiverId)
         }
     }
 
@@ -62,10 +95,10 @@ export default function ChatsNav(props: any) {
                     <span className="text-white my-2 block">Result</span>
                     <ul className="">
                         {
-                            result && result.map((user) => {
+                            result && result.map((user: IUser) => {
                                 if(user.id !== props.userInfo.id)
                                 return (
-                                    <li className="flex items-center px-2 py-1 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-transparent hover:bg-gray-800 group">
+                                    <li className="flex items-center px-2 py-1 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-transparent hover:bg-gray-800 group" onClick={()=>addConversation(props.userInfo.id, user.id)}>
                                         { user.Avatar ?
                                             <img src={`http://localhost:8000/images/${user.Avatar}`} alt="friendAvatar" className={conversation["conversation-img"]}/>
                                             : 

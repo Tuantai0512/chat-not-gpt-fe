@@ -13,6 +13,7 @@ import { useRef } from "react";
 import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { data } from "autoprefixer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -153,10 +154,20 @@ export default function Home() {
       handleSend();
     }
   }
+  
+  const [newConversation, setNewConversation] = useState({});
+
+  socket?.on('getNewConversation', (data: any) => {
+    setNewConversation(data)
+  })
+  //send new conversation socket
+  const sendNewConversation = (newConv: any, receiverId: number | string) => {
+    socket?.emit('newConversation',{receiverId ,newConv});
+  }
 
   return (
     <main className={`${HomeStyle["chats-app"]} flex`}>
-      <ChatsNav userInfo={user} onlineContact={onlineContact}/>
+      <ChatsNav userInfo={user} onlineContact={onlineContact} sendNewConversation={sendNewConversation} newConversation={newConversation}/>
       <div className="w-3/4 dark:bg-gray-700 dark:text-white flex justify-between flex-col">
       {conversation && <Conversation conversation={conversation} currentUser={user.id.toString()} online={onlineContact} selected={true}/>}
         {
