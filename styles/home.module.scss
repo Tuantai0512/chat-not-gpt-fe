@@ -6,18 +6,36 @@
     top: 10%;
     font-size: 40px;
     color: #888;
+    @media (max-width: 640px){
+        position: unset;
+        height: calc(100vh - 6.5rem);
+        align-items: center;
+        text-align: center;
+    }
 }
 
 .message-box{
     height: calc(100vh - 117px);
     overflow-y: scroll;
+    padding: 0 15px;
+    @media (max-width:640px) {
+        width: 100%;
+    }
 }
 
 .send-icon{
     position: relative;
-    left: -40px;
+    margin-left: -40px;
     border-radius: 50%;
     width: 40px;
     background-color: darkgrey;
     height: 40px;
+    top: -4px;
+    left: -7px;
+}
+
+.bars-icon{
+    width: 25px;
+    height: 25px;
+    padding: 10px;
 }

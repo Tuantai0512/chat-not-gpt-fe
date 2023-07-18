@@ -12,7 +12,7 @@ import { addToken } from "../stores/actions/userActions";
 import { useRef } from "react";
 import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faBars } from "@fortawesome/free-solid-svg-icons";
 import { data } from "autoprefixer";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -165,10 +165,20 @@ export default function Home() {
     socket?.emit('newConversation',{receiverId ,newConv});
   }
 
+  //handle display chat nav mobile
+
+  const showChatNav = () => {
+    const chatNav = document.getElementById('chats-nav');
+    const closeIcon = document.getElementById('close-icon');
+    chatNav.style.cssText = 'left: 0; animation: .5s slide-right;'
+    closeIcon.style.display = 'block'
+  }
+
   return (
     <main className={`${HomeStyle["chats-app"]} flex`}>
       <ChatsNav userInfo={user} onlineContact={onlineContact} sendNewConversation={sendNewConversation} newConversation={newConversation}/>
-      <div className="w-3/4 dark:bg-gray-700 dark:text-white flex justify-between flex-col">
+      <div className="sm:w-3/4 w-full dark:bg-gray-700 dark:text-white flex justify-between flex-col">
+      <div id="mobile-nav" className="sm:hidden border-b-2 "><FontAwesomeIcon icon={faBars} className={HomeStyle["bars-icon"]} onClick={showChatNav}/></div>
       {conversation && <Conversation conversation={conversation} currentUser={user.id.toString()} online={onlineContact} selected={true}/>}
         {
           conversation ?
@@ -191,7 +201,7 @@ export default function Home() {
           <input
             type="text"
             placeholder="Write something...."
-            className="w-3/5 pl-4 pr-12 py-2 flex items-center border-2 bg-transparent rounded-full"
+            className="w-full sm:w-3/5 pl-4 pr-12 py-2 mb-2 mx-2 flex items-center border-2 bg-transparent rounded-full"
             onChange={(e) => setNewMessage(e.target.value)}
             value={newMessage}
             onKeyDown={handleKeyDown}

@@ -8,7 +8,8 @@ import { useDispatch } from "react-redux";
 import { saveCurrentChat } from "@/stores/actions/currentChatAction";
 import Avatar from "../public/l60Hf.png"
 import Image from "next/image";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function ChatsNav(props: any) {
@@ -18,18 +19,18 @@ export default function ChatsNav(props: any) {
         firstName: string,
         lastName: string
     }
-    
+
     const [search, setSearch] = useState('')
-    
+
     const [result, setResult] = useState([]);
-    
+
     const [conversations, setConversations] = useState([]);
-    
+
     const [newConversations, setNewConversations] = useState(null);
 
     useEffect(() => {
         setNewConversations(props.newConversation);
-    },[props.newConversation])
+    }, [props.newConversation])
 
     const dispatch = useDispatch();
 
@@ -45,7 +46,6 @@ export default function ChatsNav(props: any) {
         getConversations(props.userInfo.id)
     }, [props.userInfo.id, newConversations])
 
-
     const handleSearchUser = async (event: any) => {
         if (event.key === 'Enter') {
             const searchUI = document.getElementById('search-result');
@@ -60,28 +60,43 @@ export default function ChatsNav(props: any) {
         }
     }
 
-    const addConversation = async(senderId: (string | number), receiverId: (string | number)) => {
+    const addConversation = async (senderId: (string | number), receiverId: (string | number)) => {
         let checkReceiverId = false;
+        const searchUI = document.getElementById('search-result');
         conversations.forEach((conversation) => {
-            if(conversation.members.includes(receiverId.toString())){
+            if (conversation.members.includes(receiverId.toString())) {
                 checkReceiverId = true
             }
         });
-        if(checkReceiverId){
+        if (checkReceiverId) {
             console.log('Conversation already exist!')
-        }else{
-            const res = await axios.post('http://localhost:8000/api/v1/conversation',{
+        } else {
+            const res = await axios.post('http://localhost:8000/api/v1/conversation', {
                 senderId: senderId.toString(), receiverId: receiverId.toString()
             });
-            console.log(res);
             getConversations(props.userInfo.id);
-            props.sendNewConversation(res?.data, receiverId)
+            props.sendNewConversation(res?.data, receiverId);
+            searchUI.style.display = "none";
         }
     }
 
+    const hideChatNav = () => {
+        const chatNav = document.getElementById('chats-nav');
+        const closeIcon = document.getElementById('close-icon');
+        chatNav.style.cssText = 'left: -300px; animation: .5s slide-left;'
+        closeIcon.style.display = 'none'
+    }
+
+    const handleConversationSelected = (conversation: any) => {
+        dispatch(saveCurrentChat(conversation));
+        hideChatNav();
+        const mbNav = document.getElementById('mobile-nav')
+        mbNav.style.display = 'none'
+    }
 
     return (
-        <div className={`w-1/4 h-screen flex flex-col bg-gray-900 justify-between ${chats['chats-nav']}`}>
+        <div id="chats-nav" className={`w-1/4 h-screen hidden flex-col bg-gray-900 justify-between ${chats['chats-nav']} sm:flex`}>
+            <FontAwesomeIcon icon={faXmark} id="close-icon" className={chats['close-icon']} onClick={hideChatNav}/>
             <div className="overflow-auto">
                 <input
                     className={`${chats['chats-search-user']} `}
@@ -96,21 +111,21 @@ export default function ChatsNav(props: any) {
                     <ul className="">
                         {
                             result && result.map((user: IUser) => {
-                                if(user.id !== props.userInfo.id)
-                                return (
-                                    <li className="flex items-center px-2 py-1 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-transparent hover:bg-gray-800 group" onClick={()=>addConversation(props.userInfo.id, user.id)}>
-                                        { user.Avatar ?
-                                            <img src={`http://localhost:8000/images/${user.Avatar}`} alt="friendAvatar" className={conversation["conversation-img"]}/>
-                                            : 
-                                            <Image
-                                                src={Avatar}
-                                                alt="Avatar"
-                                                className={conversation["conversation-img"]}
-                                            />
-                                        }
-                                        <span className="text-white px-2">{user?.firstName} {user?.lastName}</span>
-                                    </li>
-                                )
+                                if (user.id !== props.userInfo.id)
+                                    return (
+                                        <li className="flex items-center px-2 py-1 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-transparent hover:bg-gray-800 group" onClick={() => addConversation(props.userInfo.id, user.id)}>
+                                            {user.Avatar ?
+                                                <img src={`http://localhost:8000/images/${user.Avatar}`} alt="friendAvatar" className={conversation["conversation-img"]} />
+                                                :
+                                                <Image
+                                                    src={Avatar}
+                                                    alt="Avatar"
+                                                    className={conversation["conversation-img"]}
+                                                />
+                                            }
+                                            <span className="text-white px-2">{user?.firstName} {user?.lastName}</span>
+                                        </li>
+                                    )
                             })
                         }
                     </ul>
@@ -120,7 +135,7 @@ export default function ChatsNav(props: any) {
                     <ul>
                         {
                             conversations.map((conversation) => (
-                                <li onClick={() => dispatch(saveCurrentChat(conversation))}>
+                                <li onClick={() => handleConversationSelected(conversation)}>
                                     <Conversation conversation={conversation} currentUser={props.userInfo.id.toString()} online={props.onlineContact} selected={false} />
                                 </li>
                             ))

@@ -11,6 +11,10 @@
             border-radius: 50%;
             object-fit: cover;
             position: relative;
+            @media (max-width: 640px) {
+                width: 30px;
+                height: 30px;
+            }
         }
     }
 }
@@ -31,5 +35,11 @@
         left: 58px;
         bottom: 4px;
         border: 1px solid #000;
+        @media (max-width:640px) {
+            margin-left: 7px;
+            width: 15px;
+            height: 15px;
+            margin-bottom: 5px
+        }
     }
 }

@@ -3,6 +3,9 @@ import Avatar from "../public/l60Hf.png"
 import conversation from "../styles/conversation.module.scss"
 import { useState, useEffect } from "react"
 import axios from "axios"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import HomeStyle from "../styles/home.module.scss";
 
 export default function Conversation(props: any) {
 
@@ -24,12 +27,20 @@ export default function Conversation(props: any) {
                 console.log(err)
             }
         }
-        getUser(friendId[0])
-    }, [friendId[0]])
+        getUser(friendId)
+    }, [friendId])
+
+    const showChatNav = () => {
+        const chatNav = document.getElementById('chats-nav');
+        const closeIcon = document.getElementById('close-icon');
+        chatNav.style.cssText = 'left: 0; animation: .5s slide-right;'
+        closeIcon.style.display = 'block'
+    }
 
     return (
         props.selected ?
-        <div className="flex items-center px-4 py-1 relative cursor-pointer break-all pr-[4.5rem] )} )} bg-transparent group border-b sticky">
+        <div className="flex items-center px-4 py-1 pl-0 sm:pl-4 relative cursor-pointer break-all bg-transparent group border-b sticky">
+            <FontAwesomeIcon icon={faBars} className={`${HomeStyle["bars-icon"]} pr-0 sm:hidden`} onClick={showChatNav}/>
             {
                 avatar ? <img src={`http://localhost:8000/images/${avatar}`} alt="friendAvatar" className={conversation["conversation-img-selected"]}/>
                 :
@@ -40,10 +51,10 @@ export default function Conversation(props: any) {
                 />
             }
                 <div className={`${conversation["online-icon-selected"]} ${checkOnline ? ' bg-green-400' : ' bg-neutral-400'}`}></div>
-            <span className="text-black px-5 dark:text-white text-2xl font-bold">{user}</span>
+            <span className="text-black px-5 dark:text-white text-md sm:text-md font-bold">{user}</span>
         </div>
         :
-        <div className="flex items-center px-2 py-1 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-transparent hover:bg-gray-800 group">
+        <div className="flex items-center px-2 py-1 relative rounded-md cursor-pointer break-all bg-transparent hover:bg-gray-800 group">
             {
                 avatar ? <img src={`http://localhost:8000/images/${avatar}`} alt="friendAvatar" className={conversation["conversation-img"]}/>
                 :

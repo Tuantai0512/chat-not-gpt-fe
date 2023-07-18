@@ -20,3 +20,21 @@ body {
   color: rgb(var(--foreground-rgb));
   background: #fff;
 }
+
+@keyframes slide-right {
+  from {
+    left: -300px;
+  }
+  to {
+    left: 0;
+  }
+}
+
+@keyframes slide-left {
+  from {
+    left: 0;
+  }
+  to {
+    left: -300px;
+  }
+}
