@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useTheme } from "next-themes";
 import { Mukta } from '@next/font/google'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faXmark, faUser, faEnvelope, faPhone, faVenusMars, faPencil, faCheck} from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faUser, faEnvelope, faPhone, faVenusMars, faPencil, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from '@/stores/actions/modalActions'
 import { removeToken, editNameRedux, editEmailRedux } from '@/stores/actions/userActions';
@@ -121,7 +121,7 @@ export default function Modal(props: any) {
                 </Transition.Child>
 
                 <div className="fixed inset-0 z-10 overflow-y-auto">
-                    <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                    <div className="flex min-h-full items-center sm:items-end justify-center p-4 text-center sm:items-center sm:p-0">
                         <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"
@@ -131,12 +131,12 @@ export default function Modal(props: any) {
                             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         >
-                            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl">
+                            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl">
                                 <div className="bg-gray-50 dark:bg-gray-900 dark:text-white px-4 py-3 sm:flex sm:flex-row flex justify-between items-center border-b-2 border-gray-300 dark:border-gray-500">
                                     <span>{props.textBtn}</span>
                                     <button
                                         type="button"
-                                        className="mt-3 inline-flex w-full justify-center rounded-md bg-transparent text-sm font-semibold text-gray-900 dark:text-white ring-inset hover:bg-gray-50 dark:hover:bg-transparent sm:mt-0 sm:w-auto"
+                                        className="p-2 inline-flex w-max justify-center rounded-md bg-transparent text-sm font-semibold text-gray-900 dark:text-white ring-inset hover:bg-gray-50 dark:hover:bg-transparent sm:mt-0 sm:w-auto"
                                         onClick={() => dispatch(closeModal())}
                                         ref={cancelButtonRef}
                                     >
@@ -145,8 +145,8 @@ export default function Modal(props: any) {
                                 </div>
                                 <div className="bg-white dark:bg-gray-700 dark:text-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                     <div className="sm:flex sm:items-start">
-                                        <div className="mx-auto flex h-full w-1/5 flex-shrink-0 items-center justify-center">
-                                            <ul className='flex flex-col w-full'>
+                                        <div className="mx-auto flex h-full sm:w-1/5 flex-shrink-0 items-center justify-center">
+                                            <ul className='flex sm:flex-col w-full'>
                                                 <li
                                                     className={classNames(activeTab == 0 ? "bg-slate-400 text-white" : "bg-transparent", "mt-3 px-4 py-2 inline-flex w-full justify-center rounded-md text-sm font-semibold text-gray-900 dark:text-white ring-inset hover:cursor-pointer sm:mt-0 sm:w-auto")}
                                                     onClick={() => setActiveTab(0)}
@@ -159,14 +159,14 @@ export default function Modal(props: any) {
                                         </div>
                                         {
                                             activeTab === 0 &&
-                                            <div className="mt-3 w-4/5 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                            <div className="mt-3 sm:w-4/5 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                                 <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900 dark:text-white">
                                                     My profile
                                                 </Dialog.Title>
                                                 <div className="mt-2">
                                                     <p className="text-sm text-gray-500 dark:text-white">
                                                         <div>
-                                                            <PrevAvatar uid={props.userInfo.id} userAvatar={props.userInfo.Avatar}/>
+                                                            <PrevAvatar uid={props.userInfo.id} userAvatar={props.userInfo.Avatar} />
                                                             <div className='flex'>
                                                                 {
                                                                     editName === false ?
@@ -179,11 +179,13 @@ export default function Modal(props: any) {
                                                                         </p>
                                                                         :
                                                                         <div className='py-1 flex justify-between items-center w-full'>
-                                                                            <span>
+                                                                            <div className='flex items-center'>
                                                                                 <FontAwesomeIcon icon={faUser} className='pr-2' />
-                                                                                <input className='bg-transparent outline-none' type="text" placeholder='First Name' name='firstName' onChange={(e) => setFirstName(e.target.value)} />
-                                                                                <input className='bg-transparent outline-none' type="text" placeholder='Last Name' name='lastName' onChange={(e) => setLastName(e.target.value)} />
-                                                                            </span>
+                                                                                <div className='flex flex-col sm:flex-row'>
+                                                                                    <input className='bg-transparent outline-none py-2' type="text" placeholder='First Name' name='firstName' onChange={(e) => setFirstName(e.target.value)} />
+                                                                                    <input className='bg-transparent outline-none py-2' type="text" placeholder='Last Name' name='lastName' onChange={(e) => setLastName(e.target.value)} />
+                                                                                </div>
+                                                                            </div>
                                                                             <span>
                                                                                 <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full mr-3 dark:text-gray-600' onClick={() => setEditName(false)}><FontAwesomeIcon icon={faXmark} /></button>
                                                                                 <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full dark:text-gray-600' onClick={() => handleEditName(props.userInfo.id, firstName, lastName)}><FontAwesomeIcon icon={faCheck} /></button>
@@ -255,7 +257,7 @@ export default function Modal(props: any) {
                                                                                     <option className='dark:bg-gray-700' value='0'>Male</option>
                                                                                     <option className='dark:bg-gray-700' value='1'>Female</option>
                                                                                 </select>
-                                                                            </span> 
+                                                                            </span>
                                                                             <span>
                                                                                 <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full mr-3 dark:text-gray-600' onClick={() => setEditGender(false)}><FontAwesomeIcon icon={faXmark} /></button>
                                                                                 <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full dark:text-gray-600' onClick={() => handleEditGender(props.userInfo.id, gender)}><FontAwesomeIcon icon={faCheck} /></button>
@@ -270,7 +272,7 @@ export default function Modal(props: any) {
                                         }
                                         {
                                             activeTab === 1 &&
-                                            <div className="mt-3 text-center w-4/5 sm:ml-4 sm:mt-0 sm:text-left">
+                                            <div className="mt-3 text-center sm:w-4/5 sm:ml-4 sm:mt-0 sm:text-left">
                                                 <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900 dark:text-white">
                                                     Setting
                                                 </Dialog.Title>
