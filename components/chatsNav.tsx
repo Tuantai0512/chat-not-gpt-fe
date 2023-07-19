@@ -96,7 +96,7 @@ export default function ChatsNav(props: any) {
 
     return (
         <div id="chats-nav" className={`w-1/4 h-screen hidden flex-col bg-gray-900 justify-between ${chats['chats-nav']} sm:flex`}>
-            <FontAwesomeIcon icon={faXmark} id="close-icon" className={chats['close-icon']} onClick={hideChatNav}/>
+            <FontAwesomeIcon icon={faXmark} id="close-icon" className={`${chats['close-icon']} dark:text-white`} onClick={hideChatNav}/>
             <div className="overflow-auto">
                 <input
                     className={`${chats['chats-search-user']} `}
