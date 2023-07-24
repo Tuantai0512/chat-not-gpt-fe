@@ -2,13 +2,15 @@ import Image from "next/image"
 import GuestAvatar from '../public/l60Hf.png'
 import avatarStyle from '../styles/avatar.module.scss'
 import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
+import { saveData } from "@/stores/actions/userActions"
 import { faCamera } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import axios from "axios"
 
 const UploadAvatar = async (formData: any) => {
     try {
-      const res = await axios.put(`http://localhost:8000/api/v1/edit-user`, formData ,{
+      const res = await axios.put(`http://localhost:8000/api/v1/edit-avatar`, formData ,{
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -22,6 +24,8 @@ const UploadAvatar = async (formData: any) => {
 export default function PrevAvatar(props: any) {
     const [avatar, setAvatar] = useState(props.userAvatar);
 
+    const dispatch = useDispatch()
+
     const handlePrevAvatar = (e: any) => {
         const file = e.target.files[0];
 
@@ -34,8 +38,12 @@ export default function PrevAvatar(props: any) {
         formData.append('id', props.uid)
 
         UploadAvatar(formData)
-        .then(res => setAvatar(res?.data?.image?.filename))
+        .then(res => {
+          setAvatar(res?.data?.image?.filename)
+          dispatch(saveData(res?.data?.image?.filename))
+        })
         .catch(err => console.log(err))
+
     }
 
     return (
