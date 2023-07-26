@@ -10,7 +10,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../stores/actions/userActions";
 import { useRef } from "react";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPaperPlane, faBars } from "@fortawesome/free-solid-svg-icons";
 import { data } from "autoprefixer";
@@ -76,7 +76,7 @@ export default function Home() {
   //handle chat message
   const [messages, setMessages] = useState<any | never[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const [arrivalMessage, setArrivalMessage] = useState<IArrivalMessage | {}>({});
+  const [arrivalMessage, setArrivalMessage] = useState<IArrivalMessage>({ sender:null, text:null});
 
 
   useEffect(() => {
@@ -115,7 +115,13 @@ export default function Home() {
     }
   }
 
-  const scrollRef = useRef(null);
+  interface CounterTracker {
+    increment: number;
+    decrement: number;
+  }
+  
+
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -123,9 +129,9 @@ export default function Home() {
 
   //handle socket.io
 
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState<Socket>(io());
   useEffect(() => {
-    setSocket(io(process.env.NEXT_PUBLIC_URL_SOCKET));
+    setSocket(io(process.env.NEXT_PUBLIC_URL_SOCKET!));
   }, [])
 
   socket?.on('getMessage', (data: any) => {
@@ -168,8 +174,8 @@ export default function Home() {
   //handle display chat nav mobile
 
   const showChatNav = () => {
-    const chatNav = document.getElementById('chats-nav');
-    const closeIcon = document.getElementById('close-icon');
+    const chatNav = document.getElementById('chats-nav')!;
+    const closeIcon = document.getElementById('close-icon')!;
     chatNav.style.cssText = 'left: 0; animation: .5s slide-right;'
     closeIcon.style.display = 'block'
   }

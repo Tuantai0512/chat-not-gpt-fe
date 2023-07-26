@@ -106,7 +106,7 @@ export default function Modal(props: any) {
     }
 
     return (
-        <Transition.Root show={isOpen} as={Fragment} className={`${mukta.variable} font-sans`}>
+        <Transition.Root show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={() => dispatch(closeModal())}>
                 <Transition.Child
                     as={Fragment}

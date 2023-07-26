@@ -62,7 +62,7 @@ export default function ChatsNav(props: any) {
 
     const addConversation = async (senderId: (string | number), receiverId: (string | number)) => {
         let checkReceiverId = false;
-        const searchUI = document.getElementById('search-result');
+        const searchUI = document.getElementById('search-result')!;
         conversations.forEach((conversation: any) => {
             if (conversation.members.includes(receiverId.toString())) {
                 checkReceiverId = true
@@ -81,8 +81,8 @@ export default function ChatsNav(props: any) {
     }
 
     const hideChatNav = () => {
-        const chatNav = document.getElementById('chats-nav');
-        const closeIcon = document.getElementById('close-icon');
+        const chatNav = document.getElementById('chats-nav')!;
+        const closeIcon = document.getElementById('close-icon')!;
         chatNav.style.cssText = 'left: -300px; animation: .5s slide-left;'
         closeIcon.style.display = 'none'
     }
@@ -90,7 +90,7 @@ export default function ChatsNav(props: any) {
     const handleConversationSelected = (conversation: any) => {
         dispatch(saveCurrentChat(conversation));
         hideChatNav();
-        const mbNav = document.getElementById('mobile-nav')
+        const mbNav = document.getElementById('mobile-nav')!;
         mbNav.style.display = 'none'
     }
 

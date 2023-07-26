@@ -31,8 +31,8 @@ export default function Conversation(props: any) {
     }, [friendId])
 
     const showChatNav = () => {
-        const chatNav = document.getElementById('chats-nav');
-        const closeIcon = document.getElementById('close-icon');
+        const chatNav = document.getElementById('chats-nav')!;
+        const closeIcon = document.getElementById('close-icon')!;
         chatNav.style.cssText = 'left: 0; animation: .5s slide-right;'
         closeIcon.style.display = 'block'
     }
