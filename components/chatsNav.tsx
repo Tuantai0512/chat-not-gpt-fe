@@ -63,7 +63,7 @@ export default function ChatsNav(props: any) {
     const addConversation = async (senderId: (string | number), receiverId: (string | number)) => {
         let checkReceiverId = false;
         const searchUI = document.getElementById('search-result');
-        conversations.forEach((conversation) => {
+        conversations.forEach((conversation: any) => {
             if (conversation.members.includes(receiverId.toString())) {
                 checkReceiverId = true
             }
