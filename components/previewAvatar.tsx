@@ -1,14 +1,16 @@
 import Image from "next/image"
 import GuestAvatar from '../public/l60Hf.png'
 import avatarStyle from '../styles/avatar.module.scss'
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import { useDispatch} from "react-redux";
+import { saveData } from "../stores/actions/userActions";
 import { faCamera } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import axios from "axios"
 
 const UploadAvatar = async (formData: any) => {
     try {
-      const res = await axios.put(`http://localhost:8000/api/v1/edit-user`, formData ,{
+      const res = await axios.put(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}edit-avatar`, formData ,{
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -22,6 +24,8 @@ const UploadAvatar = async (formData: any) => {
 export default function PrevAvatar(props: any) {
     const [avatar, setAvatar] = useState(props.userAvatar);
 
+    const dispatch = useDispatch();
+
     const handlePrevAvatar = (e: any) => {
         const file = e.target.files[0];
 
@@ -29,12 +33,17 @@ export default function PrevAvatar(props: any) {
 
         setAvatar(file);
 
+        dispatch(saveData(avatar))
+
         const formData = new FormData();
         formData.append('image', file)
         formData.append('id', props.uid)
 
         UploadAvatar(formData)
-        .then(res => setAvatar(res?.data?.image?.filename))
+        .then(res => {
+          setAvatar(res?.data?.image?.filename)
+          dispatch(saveData(res?.data?.image?.filename));
+        })
         .catch(err => console.log(err))
     }
 
@@ -46,7 +55,7 @@ export default function PrevAvatar(props: any) {
             </label>
             {
                 avatar ?
-                    <img src={`http://localhost:8000/images/${avatar}`} alt="avatar user preview" className={avatarStyle.avatar} />
+                    <img src={`${process.env.NEXT_PUBLIC_URL_BACKEND}images/${avatar}`} alt="avatar user preview" className={avatarStyle.avatar} />
                     :
                     <Image
                         src={GuestAvatar}

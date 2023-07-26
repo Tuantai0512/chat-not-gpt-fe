@@ -17,7 +17,7 @@ export default function Login() {
     e.preventDefault();
     const res = await axios
       .post(
-        "http://localhost:8000/api/v1/login",
+        `${process.env.NEXT_PUBLIC_URL_BACKEND_API}login`,
         {
           username,
           password,

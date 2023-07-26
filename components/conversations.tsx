@@ -20,7 +20,7 @@ export default function Conversation(props: any) {
     useEffect(() => {
         const getUser = async (friendId: string) => {
             try {
-                const res = await axios.get(`http://localhost:8000/api/v1/users/?id=${friendId}`);
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}users/?id=${friendId}`);
                 setUser(`${res?.data?.users?.firstName} ${res?.data?.users?.lastName}`);
                 setAvatar(res?.data?.users?.Avatar)
             } catch (err) {
@@ -42,7 +42,7 @@ export default function Conversation(props: any) {
         <div className="flex items-center px-4 py-1 pl-0 sm:pl-4 relative cursor-pointer break-all bg-transparent group border-b sticky">
             <FontAwesomeIcon icon={faBars} className={`${HomeStyle["bars-icon"]} pr-0 sm:hidden`} onClick={showChatNav}/>
             {
-                avatar ? <img src={`http://localhost:8000/images/${avatar}`} alt="friendAvatar" className={conversation["conversation-img-selected"]}/>
+                avatar ? <img src={`${process.env.NEXT_PUBLIC_URL_BACKEND}images/${avatar}`} alt="friendAvatar" className={conversation["conversation-img-selected"]}/>
                 :
                 <Image
                     src={Avatar}
@@ -56,7 +56,7 @@ export default function Conversation(props: any) {
         :
         <div className="flex items-center px-2 py-1 relative rounded-md cursor-pointer break-all bg-transparent hover:bg-gray-800 group">
             {
-                avatar ? <img src={`http://localhost:8000/images/${avatar}`} alt="friendAvatar" className={conversation["conversation-img"]}/>
+                avatar ? <img src={`${process.env.NEXT_PUBLIC_URL_BACKEND}images/${avatar}`} alt="friendAvatar" className={conversation["conversation-img"]}/>
                 :
                 <Image
                     src={Avatar}

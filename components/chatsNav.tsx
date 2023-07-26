@@ -36,7 +36,7 @@ export default function ChatsNav(props: any) {
 
     const getConversations = async (userId: string) => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/v1/conversation/${userId}`);
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}conversation/${userId}`);
             setConversations(res?.data)
         } catch (err) {
             console.log(err)
@@ -52,7 +52,7 @@ export default function ChatsNav(props: any) {
             if (searchUI)
                 if (search) {
                     searchUI.style.display = "block";
-                    const res = await axios.get(`http://localhost:8000/api/v1/search-users/${search}`)
+                    const res = await axios.get(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}search-users/${search}`)
                     setResult(res?.data);
                 } else {
                     searchUI.style.display = "none";
@@ -71,7 +71,7 @@ export default function ChatsNav(props: any) {
         if (checkReceiverId) {
             console.log('Conversation already exist!')
         } else {
-            const res = await axios.post('http://localhost:8000/api/v1/conversation', {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}conversation`, {
                 senderId: senderId.toString(), receiverId: receiverId.toString()
             });
             getConversations(props.userInfo.id);
@@ -115,7 +115,7 @@ export default function ChatsNav(props: any) {
                                     return (
                                         <li className="flex items-center px-2 py-1 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-transparent hover:bg-gray-800 group" onClick={() => addConversation(props.userInfo.id, user.id)}>
                                             {user.Avatar ?
-                                                <img src={`http://localhost:8000/images/${user.Avatar}`} alt="friendAvatar" className={conversation["conversation-img"]} />
+                                                <img src={`${process.env.NEXT_PUBLIC_URL_BACKEND}images/${user.Avatar}`} alt="friendAvatar" className={conversation["conversation-img"]} />
                                                 :
                                                 <Image
                                                     src={Avatar}

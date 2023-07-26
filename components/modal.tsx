@@ -44,7 +44,7 @@ export default function Modal(props: any) {
 
     const handleDelete = async (id: number) => {
         try {
-            let res = await axios.delete(`http://localhost:8000/api/v1/delete-user?id=${id}`);
+            let res = await axios.delete(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}/delete-user?id=${id}`);
             localStorage.removeItem("Token");
             dispatch(removeToken());
             return res
@@ -55,7 +55,7 @@ export default function Modal(props: any) {
 
     const handleEditName = async (id: number, firstName: string, lastName: string) => {
         try {
-            let res = await axios.put('http://localhost:8000/api/v1/edit-user', {
+            let res = await axios.put(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}edit-user`, {
                 id, firstName, lastName
             })
             setEditName(false)
@@ -68,7 +68,7 @@ export default function Modal(props: any) {
 
     const handleEditEmail = async (id: number, email: string) => {
         try {
-            let res = await axios.put('http://localhost:8000/api/v1/edit-user', {
+            let res = await axios.put(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}edit-user`, {
                 id, email
             })
             setEditEmail(false)
@@ -81,7 +81,7 @@ export default function Modal(props: any) {
 
     const handleEditPhoneNumber = async (id: number, phoneNumber: string) => {
         try {
-            let res = await axios.put('http://localhost:8000/api/v1/edit-user', {
+            let res = await axios.put(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}edit-user`, {
                 id, phoneNumber
             })
             setEditPhoneNumber(false)
@@ -94,7 +94,7 @@ export default function Modal(props: any) {
 
     const handleEditGender = async (id: number, gender: string) => {
         try {
-            let res = await axios.put('http://localhost:8000/api/v1/edit-user', {
+            let res = await axios.put(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}edit-user`, {
                 id, gender
             })
             setEditGender(false)
@@ -241,7 +241,7 @@ export default function Modal(props: any) {
                                                                         <p className='py-1 flex justify-between items-center'>
                                                                             <span>
                                                                                 <FontAwesomeIcon icon={faVenusMars} className='pr-2' />
-                                                                                {props.userInfo.gender === 0 ? 'Male' : 'Female'}
+                                                                                {props.userInfo.gender === true ? 'Male' : 'Female'}
                                                                             </span>
                                                                             <button className='px-2 py-1 border-2 rounded-lg bg-gray-200 rounded-full dark:text-gray-600' onClick={() => setEditGender(true)}><FontAwesomeIcon icon={faPencil} /></button>
                                                                         </p>
@@ -254,8 +254,8 @@ export default function Modal(props: any) {
                                                                                     onChange={(e) => setGender(e.target.value)}
                                                                                     className='bg-transparent border-black-600 dark:border-white-600 border-2 rounded-lg'
                                                                                 >
-                                                                                    <option className='dark:bg-gray-700' value='0'>Male</option>
-                                                                                    <option className='dark:bg-gray-700' value='1'>Female</option>
+                                                                                    <option className='dark:bg-gray-700' value='true'>Male</option>
+                                                                                    <option className='dark:bg-gray-700' value='false'>Female</option>
                                                                                 </select>
                                                                             </span>
                                                                             <span>

@@ -12,7 +12,7 @@ export default function Register(){
     const handleSubmit = async(e: any) => {
         e.preventDefault();
         if(password == confirm){
-            const res = await axios.post('http://localhost:8000/api/v1/create-new-user', {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}create-new-user`, {
             username, password
         }, {
             headers: {

@@ -19,7 +19,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 const verifyToken = async (token: string) => {
   try {
-    const res = await axios.post("http://localhost:8000/api/v1/auth", {
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}auth`, {
       token,
     });
 
@@ -31,7 +31,7 @@ const verifyToken = async (token: string) => {
 
 const getUserData = async (id: number) => {
   try {
-    const res = await axios.get(`http://localhost:8000/api/v1/users?id=${id}`);
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}users?id=${id}`);
     return res
   } catch (error) {
     console.log(error);
@@ -82,7 +82,7 @@ export default function Home() {
   useEffect(() => {
     const getMessage = async () => {
       try {
-        const res = await axios.get(`http://localhost:8000/api/v1/message/${conversation?._id}`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}message/${conversation?._id}`);
         setMessages(res?.data)
       } catch (err) {
         console.log(err)
@@ -107,7 +107,7 @@ export default function Home() {
     })
 
     try {
-      let res = await axios.post('http://localhost:8000/api/v1/message', message);
+      let res = await axios.post(`${process.env.NEXT_PUBLIC_URL_BACKEND_API}message`, message);
       setMessages([...messages, res?.data]);
       setNewMessage('')
     } catch (err) {
@@ -125,7 +125,7 @@ export default function Home() {
 
   const [socket, setSocket] = useState(null);
   useEffect(() => {
-    setSocket(io('ws://localhost:9000'));
+    setSocket(io(process.env.NEXT_PUBLIC_URL_SOCKET));
   }, [])
 
   socket?.on('getMessage', (data: any) => {

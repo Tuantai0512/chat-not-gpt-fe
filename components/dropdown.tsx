@@ -23,7 +23,7 @@ export default function Dropdown(props: any) {
           <div className='flex items-center'>
             {
               props?.userAvatar ? 
-              <img src={`http://localhost:8000/images/${props.userAvatar}`} alt='user avatar' className={avatarStyle['avatar-dropdown']}/>
+              <img src={`${process.env.NEXT_PUBLIC_URL_BACKEND}images/${props.userAvatar}`} alt='user avatar' className={avatarStyle['avatar-dropdown']}/>
               :
               <Image
                     src={Avatar}
