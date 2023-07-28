@@ -99,9 +99,9 @@ export default function Dropdown(props: any) {
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block w-full px-4 py-2 text-left text-sm'
                     )}
-                    onClick={() => {
+                    onClick={async() => {
+                      await router.push("/user/login");
                       localStorage.removeItem("Token");
-                      router.push("/user/login");
                     }}
                   >
                     Sign out
