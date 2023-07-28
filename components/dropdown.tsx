@@ -7,6 +7,7 @@ import { openModal } from '@/stores/actions/modalActions'
 import avatarStyle from '../styles/avatar.module.scss'
 import Image from "next/image"
 import Avatar from '../public/l60Hf.png'
+import { useRouter } from 'next/router';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -14,6 +15,7 @@ function classNames(...classes: string[]) {
 
 export default function Dropdown(props: any) {
   const dispatch = useDispatch();
+  const router = useRouter();
   const modalStatusRedux = useSelector((state: any) => state.modal);
   const { isOpen } = modalStatusRedux;
   return (
@@ -97,7 +99,10 @@ export default function Dropdown(props: any) {
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block w-full px-4 py-2 text-left text-sm'
                     )}
-                    onClick={() => {localStorage.removeItem("Token")}}
+                    onClick={() => {
+                      localStorage.removeItem("Token");
+                      router.push("/user/login");
+                    }}
                   >
                     Sign out
                   </button>
