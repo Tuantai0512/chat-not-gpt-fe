@@ -8,6 +8,7 @@ import avatarStyle from '../styles/avatar.module.scss'
 import Image from "next/image"
 import Avatar from '../public/l60Hf.png'
 import { useRouter } from 'next/router';
+import { Skeleton } from 'antd';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -33,7 +34,7 @@ export default function Dropdown(props: any) {
                     className={avatarStyle['avatar-dropdown']}
               />
             }
-            {props.fullname}
+            {props.fullname != "undefined undefined" ? <p>{props.fullname}</p> : <Skeleton active paragraph={false} title={{width: 150}}/>}
           </div>
           <FontAwesomeIcon icon={faEllipsis} />
         </Menu.Button>

@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToken } from "../stores/actions/userActions";
 import { useRef } from "react";
 import { io, Socket } from "socket.io-client";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faBars } from "@fortawesome/free-solid-svg-icons";
 import { data } from "autoprefixer";
 

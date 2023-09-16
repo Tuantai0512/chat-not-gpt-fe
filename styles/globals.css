@@ -21,6 +21,10 @@ body {
   background: #fff;
 }
 
+.ant-skeleton-title{
+  background-color: #fff !important;
+}
+
 @keyframes slide-right {
   from {
     left: -300px;
